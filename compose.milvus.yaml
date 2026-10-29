@@ -1,0 +1,64 @@
+services:
+  milvus-volume-init:
+    image: busybox:1.37.0
+    user: "0:0"
+    # Seule étape root : propriétaire du répertoire racine du volume dédié.
+    # Aucun chown récursif, accès hôte, privilège global ou effacement.
+    command: [sh, -ec, "chown 10001:10001 /state/milvus"]
+    volumes:
+      - milvus-data:/state/milvus
+    networks: [milvus-internal]
+    read_only: true
+    cap_drop: [ALL]
+    cap_add: [CHOWN]
+    security_opt: ["no-new-privileges:true"]
+    cpus: 0.1
+    mem_limit: 32m
+    pids_limit: 16
+    restart: "no"
+
+  milvus:
+    image: milvusdb/milvus:v2.5.26
+    # UID non-root ; GID 0 requis par les droits 774 de cette image officielle.
+    # Racine en lecture seule et toutes les capabilities retirées.
+    user: "10001:0"
+    command: [milvus, run, standalone]
+    environment:
+      ETCD_USE_EMBED: "true"
+      ETCD_DATA_DIR: /var/lib/milvus/etcd
+      ETCD_CONFIG_PATH: /milvus/configs/embedEtcd.yaml
+      COMMON_STORAGETYPE: local
+      GOMAXPROCS: "2"
+      OMP_NUM_THREADS: "1"
+      HOME: /tmp
+    volumes:
+      - milvus-data:/var/lib/milvus
+      - ./infra/milvus/user.yaml:/milvus/configs/user.yaml:ro
+      - ./infra/milvus/embedEtcd.yaml:/milvus/configs/embedEtcd.yaml:ro
+    tmpfs:
+      - /tmp:size=128m,mode=1777
+    networks: [milvus-internal]
+    depends_on:
+      milvus-volume-init:
+        condition: service_completed_successfully
+    healthcheck:
+      test: [CMD, curl, --fail, --max-time, "2", http://localhost:9091/healthz]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+      start_period: 60s
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    cpus: 2.0
+    mem_limit: 4g
+    pids_limit: 512
+    stop_grace_period: 30s
+    restart: "no"
+
+
+networks:
+  milvus-internal:
+    internal: true
+volumes:
+  milvus-data: {}

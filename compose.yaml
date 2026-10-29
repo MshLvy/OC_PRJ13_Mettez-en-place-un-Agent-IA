@@ -1,0 +1,92 @@
+name: p13-release
+services:
+  backend:
+    image: p13-release-backend:local
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+      target: runtime
+    ports:
+      - "127.0.0.1:8001:8000"
+    environment:
+      EXPLORER_MODE: "${EXPLORER_MODE:-disabled}"
+      EXPLORER_DEFAULT_MODE: "${EXPLORER_DEFAULT_MODE:-disabled}"
+      ANALYSIS_DEFAULT_ENGINE: "${ANALYSIS_DEFAULT_ENGINE:-false}"
+      DEMO_ENABLED: "${DEMO_ENABLED:-true}"
+      DEMO_ALLOW_LIVE: "${DEMO_ALLOW_LIVE:-false}"
+      GAME_ALLOW_TOOLS: "${GAME_ALLOW_TOOLS:-false}"
+      APP_NAME: "${APP_NAME:-OC Projet 13}"
+      # Valeur issue du shell ou du .env Compose ; omise si non définie.
+      # Ne pas remplacer par env_file global ni une interpolation vide par défaut.
+      LICHESS_API_TOKEN:
+      # Explicit backend-only generation configuration; never a global env_file.
+      MISTRAL_API_KEY:
+      GROQ_API_KEY:
+      MONGO_ENABLED: "${MONGO_ENABLED:-false}"
+      MONGO_PASSWORD:
+      YOUTUBE_API_KEY:
+      YOUTUBE_MODE: "${YOUTUBE_MODE:-disabled}"
+      ADVISOR_API_PROVIDER: "${ADVISOR_API_PROVIDER:-mistral}"
+      ADVISOR_API_MODEL: "${ADVISOR_API_MODEL:-mistral-small-latest}"
+      ADVISOR_API_ENDPOINT: "${ADVISOR_API_ENDPOINT:-https://api.mistral.ai/v1/chat/completions}"
+      ADVISOR_API_SECRET_ENV: "${ADVISOR_API_SECRET_ENV:-MISTRAL_API_KEY}"
+      ADVISOR_API_TIMEOUT_SECONDS: "${ADVISOR_API_TIMEOUT_SECONDS:-15}"
+      LOCAL_LLM_TIMEOUT_SECONDS: "${LOCAL_LLM_TIMEOUT_SECONDS:-45}"
+      # Empty optional values preserve legacy precedence in the backend resolver.
+      GENERATION_MAX_TOKENS: "${GENERATION_MAX_TOKENS:-}"
+      LOCAL_LLM_MAX_TOKENS: "${LOCAL_LLM_MAX_TOKENS:-}"
+      MISTRAL_MAX_TOKENS: "${MISTRAL_MAX_TOKENS:-}"
+      GROQ_MAX_TOKENS: "${GROQ_MAX_TOKENS:-}"
+      GROQ_REASONING_EFFORT: "${GROQ_REASONING_EFFORT-low}"
+      STOCKFISH_ENABLED: "${STOCKFISH_ENABLED:-false}"
+      STOCKFISH_PATH: "${STOCKFISH_PATH:-/usr/games/stockfish}"
+      STOCKFISH_TIME_SECONDS: "${STOCKFISH_TIME_SECONDS:-0.5}"
+      LOCAL_LLM_URL: "http://advisor-local:8080"
+      DEMO_TRUSTED_PROXY_IP: "172.30.73.2"
+    networks:
+      app-net:
+        ipv4_address: 172.30.73.3
+    command: [python, -m, uvicorn, app.main:app, --host, 0.0.0.0, --port, "8000", --workers, "1", --no-proxy-headers]
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/api/v1/healthcheck', timeout=2).close()"
+      interval: 5s
+      timeout: 3s
+      retries: 5
+      start_period: 5s
+    read_only: true
+    tmpfs:
+      - /tmp:size=16m,mode=1777
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    init: true
+    cpus: 1.0
+    mem_limit: 256m
+    pids_limit: 64
+
+  frontend:
+    image: p13-release-frontend:local
+    build: ./frontend
+    ports: ["127.0.0.1:5173:5173"]
+    environment: {PRJ13_API_TARGET: "http://backend:8000"}
+    networks:
+      app-net: {ipv4_address: 172.30.73.2}
+    depends_on:
+      backend: {condition: service_healthy}
+    read_only: true
+    tmpfs: ["/app/node_modules/.vite:size=32m,uid=1000,gid=1000", "/app/node_modules/.vite-temp:size=8m,uid=1000,gid=1000", "/tmp:size=16m"]
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    init: true
+    cpus: 1
+    mem_limit: 512m
+    pids_limit: 64
+networks:
+  app-net:
+    ipam:
+      config: [{subnet: 172.30.73.0/29}]

@@ -1,0 +1,43 @@
+services:
+  backend:
+    environment: {ADVISOR_BGE_URL: "http://advisor-bge:8090"}
+    networks: {milvus-internal: {}}
+  advisor-bge: &bge
+    image: p13-release-bge:local
+    build:
+      context: .
+      dockerfile: retrieval/Dockerfile
+      additional_contexts: {wheelhouse: ./wheelhouse}
+    user: "${BGE_UID:-10001}:${BGE_GID:-10001}"
+    command: [python, -m, retrieval.server]
+    environment:
+      HF_HUB_OFFLINE: "1"
+      TRANSFORMERS_OFFLINE: "1"
+      NO_PROXY: "milvus,localhost,127.0.0.1"
+      no_proxy: "milvus,localhost,127.0.0.1"
+    volumes:
+      - type: bind
+        source: ./models/bge
+        target: /models/bge
+        read_only: true
+        bind: {create_host_path: false}
+    networks: [milvus-internal]
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    cpus: 1
+    mem_limit: 8g
+    pids_limit: 128
+    init: true
+    tmpfs: ["/tmp:size=64m"]
+    healthcheck:
+      test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8090/health',timeout=2).close()"]
+      interval: 5s
+      timeout: 3s
+      retries: 60
+      start_period: 180s
+  bge-index:
+    <<: *bge
+    profiles: [tools]
+    command: [python, -m, retrieval.index]
+    healthcheck: {disable: true}

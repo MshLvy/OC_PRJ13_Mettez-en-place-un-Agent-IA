@@ -1,0 +1,83 @@
+{
+  "status": "PASS",
+  "viewport": "1920x1080",
+  "scenario": "e2e4 c7c5 + real local BM25 + deterministic excerpts; synthetic game analysis",
+  "state": {
+    "history": "e4 e2e4c5 c7c5",
+    "opening": "Ouverture actuelleMode SIMULATION — données fictives SYNTHÉTIQUES · positions et coups de fixture couverts uniquement. Aucune consultation Lichess. Analyse Stockfish locale possible seulement sur demande explicite ci-dessous.Famille identifiéeDéfense sicilienne B20Variante non encore déterminée.Source factuelle locale : Lichess chess-openings · CC0. Indépendante de Simulation / Réel.Référence et couverture3865 lignes / 3865 positions à cette révision ; couverture limitée aux positions nommées, pas à toutes les parties possibles.Version : a6189a30dc273ccb21fc2536a9a2fefd5592a67aNom original : Sicilian DefenseTraductions de six familles, revue éditoriale humaine encore ouverte.",
+    "deterministic": true,
+    "sources": 3,
+    "realDisabled": true,
+    "syntheticAnalysis": true
+  },
+  "api_responses": [
+    {
+      "path": "/api/v1/demo/capabilities",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/game/state",
+      "status": 200,
+      "graph": "p13_global_v1",
+      "workflow": "root.route_action,analysis.admit_action,analysis.execute_action,analysis.check_result,root.finish_action"
+    },
+    {
+      "path": "/api/v1/openings/identify",
+      "status": 200,
+      "graph": "p13_global_v1",
+      "workflow": "root.route_action,analysis.admit_action,analysis.execute_action,analysis.check_result,root.finish_action"
+    },
+    {
+      "path": "/api/v1/demo/analysis",
+      "status": 200,
+      "graph": "p13_global_v1",
+      "workflow": "root.route_action,analysis.admit_action,analysis.execute_action,analysis.check_result,root.finish_action"
+    },
+    {
+      "path": "/api/v1/demo/turn",
+      "status": 200,
+      "graph": "p13_global_v1",
+      "workflow": "root.route_action,analysis.admit_action,analysis.execute_action,analysis.check_result,root.finish_action"
+    },
+    {
+      "path": "/api/v1/demo/analysis",
+      "status": 200,
+      "graph": "p13_global_v1",
+      "workflow": "root.route_action,analysis.admit_action,analysis.execute_action,analysis.check_result,root.finish_action"
+    },
+    {
+      "path": "/api/v1/openings/identify",
+      "status": 200,
+      "graph": "p13_global_v1",
+      "workflow": "root.route_action,analysis.admit_action,analysis.execute_action,analysis.check_result,root.finish_action"
+    },
+    {
+      "path": "/api/v1/demo/turn",
+      "status": 200,
+      "graph": "p13_global_v1",
+      "workflow": "root.route_action,analysis.admit_action,analysis.execute_action,analysis.check_result,root.finish_action"
+    },
+    {
+      "path": "/api/v1/openings/identify",
+      "status": 200,
+      "graph": "p13_global_v1",
+      "workflow": "root.route_action,analysis.admit_action,analysis.execute_action,analysis.check_result,root.finish_action"
+    },
+    {
+      "path": "/api/v1/demo/analysis",
+      "status": 200,
+      "graph": "p13_global_v1",
+      "workflow": "root.route_action,analysis.admit_action,analysis.execute_action,analysis.check_result,root.finish_action"
+    },
+    {
+      "path": "/api/v1/advisor/conversation",
+      "status": 200,
+      "graph": "p13_global_v1",
+      "workflow": "root.route_action,rag.admit_action,rag.execute_action,rag.check_result,root.finish_action"
+    }
+  ],
+  "blocked_external_requests": [],
+  "real_provider_calls": 0,
+  "model_inferences": 0,
+  "db_connections": 0
+}

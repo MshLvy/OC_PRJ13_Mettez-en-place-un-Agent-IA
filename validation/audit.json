@@ -1,0 +1,77 @@
+{
+  "date": "2026-10-29",
+  "checks": [
+    {
+      "name": "public_files_secret_shapes",
+      "status": "PASS",
+      "detail": []
+    },
+    {
+      "name": "no_private_or_internal_references",
+      "status": "PASS",
+      "detail": []
+    },
+    {
+      "name": "markdown_links_and_fences",
+      "status": "PASS",
+      "detail": {
+        "links": 95,
+        "issues": [],
+        "remote_urls": "not fetched",
+        "anchors": "not exhaustive"
+      }
+    },
+    {
+      "name": "python_sources_parse",
+      "status": "PASS",
+      "detail": {
+        "modules": 87
+      }
+    },
+    {
+      "name": "corpus_identity_rights_metadata",
+      "status": "PASS",
+      "detail": {
+        "count": 96,
+        "sha256": "7eb6b10749b1d09985139cb4fa89a5f2b11d75aa4ae2499e4614937923f86064",
+        "human_expert_validation": false
+      }
+    },
+    {
+      "name": "original_code_license_and_notices",
+      "status": "PASS",
+      "detail": {
+        "original_code": "GPL-3.0-or-later",
+        "corpus": "CC-BY-SA-4.0",
+        "catalogue": "CC0-1.0"
+      }
+    },
+    {
+      "name": "excluded_experiments_and_private_data",
+      "status": "PASS",
+      "detail": {
+        "old_corpora_or_evaluation_directories": false,
+        "private_config_contents_read": false
+      }
+    },
+    {
+      "name": "new_main_repository_no_imported_history",
+      "status": "PASS",
+      "detail": {
+        "branch": "main",
+        "commits": 0,
+        "remotes": [],
+        "independent_objects": true,
+        "unsafe_staged_paths": []
+      }
+    }
+  ],
+  "passed": 8,
+  "failed": 0,
+  "files": 204,
+  "candidate_manifest_sha256": "72d9064d4acc28520218d6c12ba30f4d8be7e792be5d3e97c4fa6fa941a4aea8",
+  "provider_calls": 0,
+  "physical_clean_install_validated": false,
+  "license_original_code": "GPL-3.0-or-later",
+  "public_push_performed": false
+}

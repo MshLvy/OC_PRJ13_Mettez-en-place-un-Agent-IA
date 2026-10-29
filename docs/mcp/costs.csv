@@ -1,0 +1,9 @@
+metric,unit,A,B
+catalogue_video_hours,hours,6.666667,100.0
+sampled_frames,frames,12000,180000
+stored_gb_two_copies,GB,12.648,189.72
+initial_cpu_core_hours,core-hours hypothesis,2.383333,35.75
+monthly_cpu_core_hours,core-hours hypothesis,0.238333,3.575
+infrastructure_usd_month,USD/month,24.087904,45.318554
+human_eur_month,EUR/month,188.095238,509.52381
+opex_eur_month,EUR/month,209.731727,550.230316

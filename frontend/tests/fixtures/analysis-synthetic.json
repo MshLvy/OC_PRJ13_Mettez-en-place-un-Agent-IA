@@ -1,0 +1,216 @@
+{
+  "data": {
+    "status": "ok",
+    "fen_normalized": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+    "position": {
+      "valid": true,
+      "fen_normalized": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+      "side_to_move": "white",
+      "legal_moves_count": 20,
+      "legal_moves_uci": [
+        "a2a3",
+        "a2a4",
+        "b1a3",
+        "b1c3",
+        "b2b3",
+        "b2b4",
+        "c2c3",
+        "c2c4",
+        "d2d3",
+        "d2d4",
+        "e2e3",
+        "e2e4",
+        "f2f3",
+        "f2f4",
+        "g1f3",
+        "g1h3",
+        "g2g3",
+        "g2g4",
+        "h2h3",
+        "h2h4"
+      ],
+      "legal_moves_truncated": false,
+      "is_check": false,
+      "is_checkmate": false,
+      "is_stalemate": false,
+      "is_insufficient_material": false,
+      "is_terminal": false,
+      "termination": null,
+      "history_available": false,
+      "repetition_status": "unknown_without_history"
+    },
+    "tools": {
+      "explorer": {
+        "requested": true,
+        "status": "ok",
+        "http_status": 200,
+        "result": {
+          "status": "ok",
+          "fen_normalized": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+          "source": "lichess_opening_explorer",
+          "source_mode": "synthetic_fixture",
+          "base": "masters",
+          "position_statistics": {
+            "white": 12,
+            "draws": 4,
+            "black": 4,
+            "games": 20
+          },
+          "moves": [
+            {
+              "uci": "a2a3",
+              "san": "a3",
+              "statistics": {
+                "white": 6,
+                "draws": 2,
+                "black": 2,
+                "games": 10
+              }
+            },
+            {
+              "uci": "a2a4",
+              "san": "a4",
+              "statistics": {
+                "white": 7,
+                "draws": 2,
+                "black": 2,
+                "games": 11
+              }
+            }
+          ],
+          "moves_truncated": false
+        }
+      },
+      "engine": {
+        "requested": true,
+        "status": "ok",
+        "http_status": 200,
+        "result": {
+          "status": "ok",
+          "fen_normalized": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+          "source": "stockfish",
+          "source_mode": "local_engine",
+          "engine_version": "Stockfish j06_i02_fixture",
+          "depth": 8,
+          "limits": {
+            "analysis_applied": true,
+            "time_seconds": 0.5,
+            "depth": 20,
+            "threads": 1,
+            "hash_mb": 16,
+            "multipv": 1,
+            "startup_timeout_seconds": 2.0,
+            "analysis_timeout_seconds": 2.0,
+            "quit_timeout_seconds": 0.25,
+            "kill_wait_timeout_seconds": 0.75
+          },
+          "score": {
+            "type": "cp",
+            "value": 35,
+            "perspective": "white",
+            "bound": "none"
+          },
+          "best_move_uci": "a2a3",
+          "best_move_san": "a3",
+          "position": {
+            "valid": true,
+            "fen_normalized": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+            "side_to_move": "white",
+            "legal_moves_count": 20,
+            "legal_moves_uci": [
+              "a2a3",
+              "a2a4",
+              "b1a3",
+              "b1c3",
+              "b2b3",
+              "b2b4",
+              "c2c3",
+              "c2c4",
+              "d2d3",
+              "d2d4",
+              "e2e3",
+              "e2e4",
+              "f2f3",
+              "f2f4",
+              "g1f3",
+              "g1h3",
+              "g2g3",
+              "g2g4",
+              "h2h3",
+              "h2h4"
+            ],
+            "legal_moves_truncated": false,
+            "is_check": false,
+            "is_checkmate": false,
+            "is_stalemate": false,
+            "is_insufficient_material": false,
+            "is_terminal": false,
+            "termination": null,
+            "history_available": false,
+            "repetition_status": "unknown_without_history"
+          }
+        }
+      }
+    },
+    "errors": [],
+    "provenance": [
+      {
+        "tool": "position",
+        "source": "python_chess",
+        "source_mode": "local_diagnostic",
+        "attempted": true,
+        "engine_version": null
+      },
+      {
+        "tool": "explorer",
+        "source": "lichess_opening_explorer",
+        "source_mode": "synthetic_fixture",
+        "attempted": true,
+        "engine_version": null
+      },
+      {
+        "tool": "engine",
+        "source": "stockfish",
+        "source_mode": "local_engine",
+        "attempted": true,
+        "engine_version": "Stockfish j06_i02_fixture"
+      }
+    ],
+    "policy": {
+      "tool_order": "explorer_then_engine",
+      "budget_seconds": 20.0,
+      "deadline_mode": "cooperative_between_bounded_tools",
+      "retries": 0,
+      "persistent_state": false
+    },
+    "graph": {
+      "framework": "langgraph",
+      "graph_version": "j03_i04bis_v2",
+      "steps": [
+        "validate_position",
+        "fetch_explorer",
+        "evaluate_engine",
+        "assemble_response"
+      ]
+    },
+    "preferences": {
+      "explorer": {
+        "ceiling": "synthetic_fixture",
+        "default": "disabled",
+        "requested": "synthetic_fixture",
+        "legacy_include": null,
+        "resolved": "synthetic_fixture",
+        "origin": "http"
+      },
+      "engine": {
+        "allowed": true,
+        "default": false,
+        "requested": true,
+        "resolved": true,
+        "origin": "http"
+      }
+    }
+  },
+  "simulation": true,
+  "notice": "Only test fixture from offline_demo_app, no physical engine or provider"
+}

@@ -1,0 +1,23 @@
+---
+config:
+  flowchart:
+    curve: linear
+---
+graph TD;
+	__start__([<p>__start__</p>]):::first
+	validate_position(validate_position)
+	fetch_explorer(fetch_explorer)
+	evaluate_engine(evaluate_engine)
+	assemble_response(assemble_response)
+	__end__([<p>__end__</p>]):::last
+	__start__ --> validate_position;
+	evaluate_engine --> assemble_response;
+	fetch_explorer -.-> assemble_response;
+	fetch_explorer -.-> evaluate_engine;
+	validate_position -.-> assemble_response;
+	validate_position -.-> evaluate_engine;
+	validate_position -.-> fetch_explorer;
+	assemble_response --> __end__;
+	classDef default fill:#f2f0ff,line-height:1.2
+	classDef first fill-opacity:0
+	classDef last fill:#bfb6fc

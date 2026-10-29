@@ -1,0 +1,11 @@
+log:
+  level: warn
+  file:
+    rootPath: /var/lib/milvus/logs
+localStorage:
+  path: /var/lib/milvus/data
+rocksmq:
+  path: /var/lib/milvus/rdb_data
+common:
+  security:
+    authorizationEnabled: false

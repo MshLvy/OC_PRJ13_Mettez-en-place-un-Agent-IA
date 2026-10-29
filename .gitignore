@@ -1,0 +1,17 @@
+__pycache__/
+*.py[cod]
+.env
+.env.*
+!.env.example
+node_modules/
+.venv/
+work/
+models/
+wheelhouse/
+dist/
+.pytest_cache/
+*.gguf
+*.bin
+*.safetensors
+*.pem
+*.key

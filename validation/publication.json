@@ -1,0 +1,108 @@
+{
+  "date": "2026-10-29",
+  "phase": "source_finalization_before_first_public_commit",
+  "original_files_verified": 205,
+  "published_file_count": 206,
+  "new_files": [
+    "validation/publication.json"
+  ],
+  "changed_existing_files": [
+    "LICENSE.md",
+    "README.md",
+    "docs/ARBORESCENCE.md",
+    "docs/AUDIT_RELEASE.md",
+    "docs/INSTALLATION.md",
+    "docs/INVENTAIRE_RELEASE.md",
+    "docs/LICENCES.md",
+    "docs/LIMITES.md",
+    "docs/PUBLICATION.md",
+    "docs/VALIDATION.md",
+    "scripts/audit-release.py",
+    "validation/audit.json",
+    "validation/files.json"
+  ],
+  "runtime_tests_data_locks_and_screenshot_unchanged": true,
+  "license_original_code": "GPL-3.0-or-later",
+  "full_gpl_text_preserved": true,
+  "third_party_rights_preserved": true,
+  "legal_blocker_identified_for_source_only_distribution": false,
+  "future_binary_distribution_requires_own_notices_and_corresponding_sources": true,
+  "frontend_license_declarations": {
+    "MIT": 136,
+    "MIT-0": 1,
+    "BSD-2-Clause": 2,
+    "Apache-2.0": 4,
+    "ISC": 4,
+    "BSD-3-Clause": 2,
+    "0BSD": 1
+  },
+  "backend_pin_count": 49,
+  "frontend_lock_package_count": 150,
+  "compose": [
+    {
+      "overlays": [],
+      "status": "PASS",
+      "containers_started": 0
+    },
+    {
+      "overlays": [
+        "milvus"
+      ],
+      "status": "PASS",
+      "containers_started": 0
+    },
+    {
+      "overlays": [
+        "mongodb"
+      ],
+      "status": "PASS",
+      "containers_started": 0
+    },
+    {
+      "overlays": [
+        "milvus",
+        "bge"
+      ],
+      "status": "PASS",
+      "containers_started": 0
+    },
+    {
+      "overlays": [
+        "local"
+      ],
+      "status": "PASS",
+      "containers_started": 0
+    },
+    {
+      "overlays": [
+        "milvus",
+        "bge",
+        "mongodb",
+        "local"
+      ],
+      "status": "PASS",
+      "containers_started": 0
+    }
+  ],
+  "prior_validation_preserved": {
+    "backend_passed": 916,
+    "frontend_passed": 169,
+    "frontend_build": "PASS",
+    "chromium_limited_scenarios": 1,
+    "application_suites_rerun_during_finalization": false
+  },
+  "fresh_full_docker_installation": "NOT_EXECUTED",
+  "new_real_model_inference": "NOT_EXECUTED",
+  "new_real_database_ingestion": "NOT_EXECUTED",
+  "provider_calls": 0,
+  "source_repository_unchanged": true,
+  "git_history_before_first_commit": {
+    "commits": 0,
+    "remotes": [],
+    "alternates": false
+  },
+  "remote_destination_verified_empty_before_publication": true,
+  "license_analysis": "documentary, source-only; not a legal opinion or binary compliance certification",
+  "final_scanner_includes_lichess_token_shapes": true,
+  "final_audit_expected_checks": 8
+}

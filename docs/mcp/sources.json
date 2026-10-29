@@ -1,0 +1,619 @@
+[
+  {
+    "id": "S01",
+    "title": "MCP architecture",
+    "url": "https://modelcontextprotocol.io/specification/2025-06-18/architecture",
+    "resolved_url": "https://modelcontextprotocol.io/specification/2025-06-18/architecture",
+    "consulted_on": "2026-10-29",
+    "http_status": 200,
+    "bytes": 133122,
+    "sha256": "9fa57c2b0772428b5d29d7dc934803aaa5dfed3bec2ea01b811fe20950b1f43b",
+    "excerpts": [
+      {
+        "term": "host",
+        "text": "s Sampling Elicitation Server Features Overview Prompts Resources Tools Utilities Schema Reference On this page Back to top Core Components Host Clients Servers Design Principles Capability Negotiation Architecture Copy page Copy page Copy page Copy page The Model Context Protocol (MCP) follows a client-host-server architecture where each host can run multiple client instances. This architecture enables users to integrate AI capabilities across applications while maintaining clear security boundaries and isolating concerns. Built on JSON-RPC, MCP provides a stateful session protocol focused on context exchange and sampling coordination between clients and servers. ​ Core Components ​ Host The host process acts as the container and coordinator: Creates and manages multiple client "
+      },
+      {
+        "term": "client",
+        "text": "tensions Registry SEPs Community Specification Key Changes Architecture Base Protocol Overview Lifecycle Transports Authorization Utilities Client Features Roots Sampling Elicitation Server Features Overview Prompts Resources Tools Utilities Schema Reference On this page Back to top Core Components Host Clients Servers Design Principles Capability Negotiation Architecture Copy page Copy page Copy page Copy page The Model Context Protocol (MCP) follows a client-host-server architecture where each host can run multiple client instances. This architecture enables users to integrate AI capabilities across applications while maintaining clear security boundaries and isolating concerns. Built on JSON-RPC, MCP provides a stateful session protocol focused on context exchange and sampling"
+      },
+      {
+        "term": "server",
+        "text": "ion Key Changes Architecture Base Protocol Overview Lifecycle Transports Authorization Utilities Client Features Roots Sampling Elicitation Server Features Overview Prompts Resources Tools Utilities Schema Reference On this page Back to top Core Components Host Clients Servers Design Principles Capability Negotiation Architecture Copy page Copy page Copy page Copy page The Model Context Protocol (MCP) follows a client-host-server architecture where each host can run multiple client instances. This architecture enables users to integrate AI capabilities across applications while maintaining clear security boundaries and isolating concerns. Built on JSON-RPC, MCP provides a stateful session protocol focused on context exchange and sampling coordination between clients and servers. "
+      }
+    ],
+    "verification": "document_verified"
+  },
+  {
+    "id": "S02",
+    "title": "MCP tools",
+    "url": "https://modelcontextprotocol.io/specification/2025-06-18/server/tools",
+    "resolved_url": "https://modelcontextprotocol.io/specification/2025-06-18/server/tools",
+    "consulted_on": "2026-10-29",
+    "http_status": 200,
+    "bytes": 327021,
+    "sha256": "a5d70f562a70016b9040bccef6c02218ef62a9717e0cc8db50138ca92b4249f7",
+    "excerpts": [
+      {
+        "term": "structuredContent",
+        "text": "s regular resources to help clients understand how to use them. ​ Structured Content Structured content is returned as a JSON object in the structuredContent field of a result. For backwards compatibility, a tool that returns structured content SHOULD also return the serialized JSON in a TextContent block. structuredContent is server-produced result data and is unrelated to LLM “structured outputs” (schema-constrained model generation). ​ Output Schema Tools may also provide an output schema for validation of structured results. If an output schema is provided: Servers MUST provide structured results that conform to this schema. Clients SHOULD validate structured results against this schema. Example tool with output schema: { \"name\" : \"get_weather_data\" , \"title\" : \"Weather Data "
+      },
+      {
+        "term": "inputSchema",
+        "text": "[ { \"name\" : \"get_weather\" , \"title\" : \"Weather Information Provider\" , \"description\" : \"Get current weather information for a location\" , \"inputSchema\" : { \"type\" : \"object\" , \"properties\" : { \"location\" : { \"type\" : \"string\" , \"description\" : \"City name or zip code\" } }, \"required\" : [ \"location\" ] } } ], \"nextCursor\" : \"next-page-cursor\" } } ​ Calling Tools To invoke a tool, clients send a tools/call request: Request: { \"jsonrpc\" : \"2.0\" , \"id\" : 2 , \"method\" : \"tools/call\" , \"params\" : { \"name\" : \"get_weather\" , \"arguments\" : { \"location\" : \"New York\" } } } Response: { \"jsonrpc\" : \"2.0\" , \"id\" : 2 , \"result\" : { \"content\" : [ { \"type\" : \"text\" , \"text\" : \"Current weather in New York: \\n Temperature: 72°F \\n Conditions: Partly cloudy\" } ], \"isError\" : false } } ​ List Changed "
+      }
+    ],
+    "verification": "document_verified"
+  },
+  {
+    "id": "S03",
+    "title": "MCP sécurité",
+    "url": "https://modelcontextprotocol.io/specification/2025-06-18/basic/security_best_practices",
+    "resolved_url": "https://modelcontextprotocol.io/docs/2025-11-25/tutorials/security/security_best_practices",
+    "consulted_on": "2026-10-29",
+    "http_status": 200,
+    "bytes": 270568,
+    "sha256": "d2548f41d48cc379647680ae2b048b365bc4fbaace814e84ad7fc1fd45f25708",
+    "excerpts": [
+      {
+        "term": "token",
+        "text": "tacks and Mitigations Confused Deputy Problem Terminology Vulnerable Conditions Architecture and Attack Flows Attack Description Mitigation Token Passthrough Risks Mitigation Server-Side Request Forgery (SSRF) Attack Description Risks Mitigation Resources and Tools Session Hijacking Session Hijack Prompt Injection Session Hijack Impersonation Attack Description Mitigation Local MCP Server Compromise Attack Description Risks Mitigation OAuth Authorization URL Validation Attack Description Risks Mitigation stdio Transport Security in Proxy Scenarios Attack Description Risks Mitigation Scope Minimization Attack Description Risks Mitigation Common Mistakes Security Security Best Practices Copy page Copy page Security considerations, attack vectors, and best practices for MCP implemen"
+      },
+      {
+        "term": "SSRF",
+        "text": "able Conditions Architecture and Attack Flows Attack Description Mitigation Token Passthrough Risks Mitigation Server-Side Request Forgery (SSRF) Attack Description Risks Mitigation Resources and Tools Session Hijacking Session Hijack Prompt Injection Session Hijack Impersonation Attack Description Mitigation Local MCP Server Compromise Attack Description Risks Mitigation OAuth Authorization URL Validation Attack Description Risks Mitigation stdio Transport Security in Proxy Scenarios Attack Description Risks Mitigation Scope Minimization Attack Description Risks Mitigation Common Mistakes Security Security Best Practices Copy page Copy page Security considerations, attack vectors, and best practices for MCP implementations Copy page Copy page ​ Introduction ​ Purpose and Scope T"
+      },
+      {
+        "term": "consent",
+        "text": " APIs, creating “ confused deputy ” vulnerabilities. This attack allows malicious clients to obtain authorization codes without proper user consent by exploiting the combination of static client IDs, dynamic client registration, and consent cookies. ​ Terminology MCP Proxy Server : An MCP server that connects MCP clients to third-party APIs, offering MCP features while delegating operations and acting as a single OAuth client to the third-party API server. Third-Party Authorization Server : Authorization server that protects the third-party API. It may lack dynamic client registration support, requiring the MCP proxy to use a static client ID for all requests. Third-Party API : The protected resource server that provides the actual API functionality. Access to this API requires t"
+      }
+    ],
+    "verification": "document_verified"
+  },
+  {
+    "id": "S04",
+    "title": "FEN / python-chess",
+    "url": "https://python-chess.readthedocs.io/en/latest/core.html",
+    "resolved_url": "https://python-chess.readthedocs.io/en/latest/core.html",
+    "consulted_on": "2026-10-29",
+    "http_status": 200,
+    "bytes": 308756,
+    "sha256": "aa93bdedb140559ff14568806289d2a63846118145994deed3fafe17d5ad5091",
+    "excerpts": [
+      {
+        "term": "board_fen",
+        "text": "ol() Moves Move Move.from_square Move.to_square Move.promotion Move.drop Move.uci() Move.from_uci() Move.null() Board STARTING_FEN STARTING_BOARD_FEN Board Board.turn Board.castling_rights Board.fullmove_number Board.halfmove_clock Board.promoted Board.chess960 Board.ep_square Board.move_stack Board.legal_moves Board.pseudo_legal_moves Board.reset() Board.clear() Board.clear_board() Board.clear_stack() Board.root() Board.ply() Board.checkers() Board.is_check() Board.gives_check() Board.gives_checkmate() Board.is_legal() Board.is_variant_end() Board.is_variant_loss() Board.is_variant_win() Board.is_variant_draw() Board.is_game_over() Board.result() Board.outcome() Board.is_checkmate() Board.is_stalemate() Board.is_insufficient_material() Board.has_insufficient_material() Board.is_"
+      },
+      {
+        "term": "en_passant",
+        "text": "Board.can_claim_threefold_repetition() Board.is_repetition() Board.push() Board.pop() Board.peek() Board.find_move() Board.has_pseudo_legal_en_passant() Board.has_legal_en_passant() Board.fen() Board.set_fen() Board.set_castling_fen() Board.chess960_pos() Board.epd() Board.set_epd() Board.san() Board.lan() Board.variation_san() Board.parse_san() Board.push_san() Board.uci() Board.parse_uci() Board.push_uci() Board.push_xboard() Board.is_en_passant() Board.is_capture() Board.is_zeroing() Board.is_irreversible() Board.is_castling() Board.is_kingside_castling() Board.is_queenside_castling() Board.clean_castling_rights() Board.has_castling_rights() Board.has_kingside_castling_rights() Board.has_queenside_castling_rights() Board.has_chess960_castling_rights() Board.status() Board.is_v"
+      },
+      {
+        "term": "castling",
+        "text": "Move.to_square Move.promotion Move.drop Move.uci() Move.from_uci() Move.null() Board STARTING_FEN STARTING_BOARD_FEN Board Board.turn Board.castling_rights Board.fullmove_number Board.halfmove_clock Board.promoted Board.chess960 Board.ep_square Board.move_stack Board.legal_moves Board.pseudo_legal_moves Board.reset() Board.clear() Board.clear_board() Board.clear_stack() Board.root() Board.ply() Board.checkers() Board.is_check() Board.gives_check() Board.gives_checkmate() Board.is_legal() Board.is_variant_end() Board.is_variant_loss() Board.is_variant_win() Board.is_variant_draw() Board.is_game_over() Board.result() Board.outcome() Board.is_checkmate() Board.is_stalemate() Board.is_insufficient_material() Board.has_insufficient_material() Board.is_seventyfive_moves() Board.is_five"
+      }
+    ],
+    "verification": "document_verified"
+  },
+  {
+    "id": "S05",
+    "title": "OpenCV homographie",
+    "url": "https://docs.opencv.org/4.x/d9/dab/tutorial_homography.html",
+    "resolved_url": "https://docs.opencv.org/4.13.0/d9/dab/tutorial_homography.html",
+    "consulted_on": "2026-10-29",
+    "http_status": 200,
+    "bytes": 81933,
+    "sha256": "f4d8d55b1a4585d87cdc0e7fad34c3d40b0604aaa5df195da7db58d556b9d6ce",
+    "excerpts": [
+      {
+        "term": "homography",
+        "text": " OpenCV: Basic concepts of the homography explained with code OpenCV 4.13.0 Open Source Computer Vision Loading... Searching... No Matches OpenCV Tutorials 2D Features framework (feature2d module) Basic concepts of the homography explained with code Table of Contents Introduction Basic theory What is the homography matrix? How the homography transformation can be useful? Demonstration codes Demo 1: Pose estimation from coplanar points Demo 2: Perspective correction Demo 3: Homography from the camera displacement Exercise Demo 4: Decompose the homography matrix Demo 5: Basic panorama stitching from a rotating camera Additional references Prev Tutorial: AKAZE and ORB planar "
+      },
+      {
+        "term": "perspective",
+        "text": "omography matrix? How the homography transformation can be useful? Demonstration codes Demo 1: Pose estimation from coplanar points Demo 2: Perspective correction Demo 3: Homography from the camera displacement Exercise Demo 4: Decompose the homography matrix Demo 5: Basic panorama stitching from a rotating camera Additional references Prev Tutorial: AKAZE and ORB planar tracking Compatibility OpenCV >= 3.0 Introduction This tutorial will demonstrate the basic concepts of the homography with some codes. For detailed explanations about the theory, please refer to a computer vision course or a computer vision book, e.g.: Multiple View Geometry in Computer Vision, Richard Hartley and Andrew Zisserman, [120] (some sample chapters are available here , CVPR Tutorials are available here"
+      }
+    ],
+    "verification": "document_verified"
+  },
+  {
+    "id": "S06",
+    "title": "fenify-3D README",
+    "url": "https://raw.githubusercontent.com/notnil/fenify-3D/master/README.md",
+    "resolved_url": "https://raw.githubusercontent.com/notnil/fenify-3D/master/README.md",
+    "consulted_on": "2026-10-29",
+    "http_status": 200,
+    "bytes": 26048,
+    "sha256": "779741bb81490d351c3e24c84228566f35b5cf153b4031019cfc3d62dd12487e",
+    "excerpts": [
+      {
+        "term": "FEN",
+        "text": "# fenify-3D\n\nFenify-3D is a specialized project leveraging AI, Machine Learning (ML), and deep learning technologies to transform real-world images of chess boards into corresponding Forsyth-Edwards Notation (FEN) strings.\n\n![Alt text](readme-assets/image-001.png)\n\n## Table of Contents\n\n1. [Introduction](#introduction)\n2. [Dataset](#dataset)\n3. [Training](#training)\n4. [Accuracy](#accuracy)\n5. [Inference](#inference)\n\n## Introduction \n\nThe Forsyth-Edwards Notation (FEN) is a standard notation crucial for delineating specific board positions in a chess game. FEN encapsulates all essential information, enabling the recommencement of a game from a"
+      },
+      {
+        "term": "accuracy",
+        "text": "t](readme-assets/image-001.png)\n\n## Table of Contents\n\n1. [Introduction](#introduction)\n2. [Dataset](#dataset)\n3. [Training](#training)\n4. [Accuracy](#accuracy)\n5. [Inference](#inference)\n\n## Introduction \n\nThe Forsyth-Edwards Notation (FEN) is a standard notation crucial for delineating specific board positions in a chess game. FEN encapsulates all essential information, enabling the recommencement of a game from a defined position.\n\nFenify-3D is engineered to analyze an image of a physical chess board and deliver a precise FEN string, illustrating the current state of the board. This facilitates the real-time transcription of chess games through video input in downstream applications.\n\nDistinct from existing chess game recording systems utilizing image and video data, Fenify-3D"
+      },
+      {
+        "term": "train",
+        "text": "(FEN) strings.\n\n![Alt text](readme-assets/image-001.png)\n\n## Table of Contents\n\n1. [Introduction](#introduction)\n2. [Dataset](#dataset)\n3. [Training](#training)\n4. [Accuracy](#accuracy)\n5. [Inference](#inference)\n\n## Introduction \n\nThe Forsyth-Edwards Notation (FEN) is a standard notation crucial for delineating specific board positions in a chess game. FEN encapsulates all essential information, enabling the recommencement of a game from a defined position.\n\nFenify-3D is engineered to analyze an image of a physical chess board and deliver a precise FEN string, illustrating the current state of the board. This facilitates the real-time transcription of chess games through video input in downstream applications.\n\nDistinct from existing chess game recording systems utilizing image "
+      }
+    ],
+    "verification": "document_verified"
+  },
+  {
+    "id": "S07",
+    "title": "fenify-3D licence",
+    "url": "https://raw.githubusercontent.com/notnil/fenify-3D/master/LICENSE",
+    "resolved_url": "https://raw.githubusercontent.com/notnil/fenify-3D/master/LICENSE",
+    "consulted_on": "2026-10-29",
+    "http_status": 200,
+    "bytes": 1069,
+    "sha256": "68531202b2d20cd09ba487aa068016640dfb0c58af91793ab6314fd8a0c9b6b9",
+    "excerpts": [
+      {
+        "term": "Permission",
+        "text": "MIT License\n\nCopyright (c) 2023 Logan Spears\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCL"
+      },
+      {
+        "term": "License",
+        "text": "MIT License\n\nCopyright (c) 2023 Logan Spears\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARR"
+      }
+    ],
+    "verification": "document_verified"
+  },
+  {
+    "id": "S08",
+    "title": "Ultralytics licences",
+    "url": "https://www.ultralytics.com/license",
+    "resolved_url": "https://www.ultralytics.com/license",
+    "consulted_on": "2026-10-29",
+    "http_status": 200,
+    "bytes": 401682,
+    "sha256": "b33a0d99d0a1be0ee6af5e824f956aff8a52ffbe1bfc157b44c7eae10da5fdef",
+    "excerpts": [
+      {
+        "term": "AGPL",
+        "text": "irst name* Last name* Business email* Next Trusted by industry leaders Choosing your license Do you need an Ultralytics Enterprise license? AGPL-3.0 covers a lot of use cases - but there are specific triggers that require an Ultralytics Enterprise license. Free AGPL-3.0 This license is the right one for you if you are comfortable open-sourcing your entire project under AGPL-3.0. Academic research and university coursework Personal projects, learning, and experimentation Open-source applications where you can publicly release the full source code Non-profit or government research if the project is completely disclosed Evaluating Ultralytics YOLO in a fully open-source environment Teams that want to build in public and benefit from open collaboration Read terms Paid Ultralytics Ent"
+      },
+      {
+        "term": "Enterprise",
+        "text": "enu Select language GitHub repository GitHub Switch apps License YOLO Licensing License Ultralytics YOLO for commercial deployment. Get the Enterprise License you need to ship YOLO in SaaS, embedded, and customer-facing products. Check if you need a license Our pricing structure Request an Ultralytics Enterprise License First name* Last name* Business email* Company size* Select company size ▼ Company website* Industry* Select industry ▼ Use case* Submit Who you are Your organization Your use case Request an Ultralytics Enterprise License First name* Last name* Business email* Next Trusted by industry leaders Choosing your license Do you need an Ultralytics Enterprise license? AGPL-3.0 covers a lot of use cases - but there are specific triggers that require an Ultralytics Enterpr"
+      }
+    ],
+    "verification": "document_verified"
+  },
+  {
+    "id": "S09",
+    "title": "YouTube politique développeurs",
+    "url": "https://developers.google.com/youtube/terms/developer-policies",
+    "resolved_url": "https://developers.google.com/youtube/terms/developer-policies",
+    "consulted_on": "2026-10-29",
+    "http_status": 200,
+    "bytes": 152022,
+    "sha256": "ce19f18cd61e37c078a5ac6dbf0b24873b629b787d93f027b180c2cb07cf9b8b",
+    "excerpts": [
+      {
+        "term": "download",
+        "text": " temporarily stored API Data . Audiovisual Content You and your API Clients must not, and must not encourage, enable, or require others to: download, import, backup, cache, or store copies of YouTube audiovisual content without YouTube's prior written approval, make content available for offline playback, or use any aspect of the YouTube API Services to facilitate or promote copyright infringement or the exploitation of copyright-infringing materials. Data Aggregation Do not aggregate API Data except that you may only aggregate API Data relating to YouTube channels that are under the same content owner as recognized by YouTube pursuant to content licensing agreement(s) between YouTube and such content owner. Such aggregated API Data must only be viewable by that content owner. Do"
+      },
+      {
+        "term": "30 days",
+        "text": " those statistics can be retrieved via the YouTube Data API service.) Note that even though an API Client may store this data for more than 30 days, the Client must still ensure every 30 days that it is still authorized by the user to access that data. For example, an API Client may store view counts for a video for more than 30 days, but it must still verify every 30 days that its authorization to access the video uploader's data has not been revoked. The API Client must also verify, every 30 days, that the video has not been deleted. To be clear, an API Client must not store statistics retrieved as Non-Authorized Data for more than 30 days. For example, an API Client must not store the subscriber count for a YouTube channel for more than 30 days without authorization from the c"
+      },
+      {
+        "term": "audiovisual",
+        "text": "ed in this section, you and your API Clients have no further permissions or rights to API Data , including to temporarily stored API Data . Audiovisual Content You and your API Clients must not, and must not encourage, enable, or require others to: download, import, backup, cache, or store copies of YouTube audiovisual content without YouTube's prior written approval, make content available for offline playback, or use any aspect of the YouTube API Services to facilitate or promote copyright infringement or the exploitation of copyright-infringing materials. Data Aggregation Do not aggregate API Data except that you may only aggregate API Data relating to YouTube channels that are under the same content owner as recognized by YouTube pursuant to content licensing agreement(s) bet"
+      }
+    ],
+    "verification": "document_verified"
+  },
+  {
+    "id": "S10",
+    "title": "YouTube search.list",
+    "url": "https://developers.google.com/youtube/v3/docs/search/list",
+    "resolved_url": "https://developers.google.com/youtube/data/reference/rest/v3/search/list",
+    "consulted_on": "2026-10-29",
+    "http_status": 200,
+    "bytes": 210991,
+    "sha256": "495330d7935858f01a75a44e180ae31adffa15fdbde9745cdb63fd249bdd876e",
+    "excerpts": [
+      {
+        "term": "Quota impact",
+        "text": "ntifies matching video , channel , and playlist resources, but you can also configure queries to only retrieve a specific type of resource. Quota impact: 100 calls per day. A call to this method has a quota cost of 1 unit in the Search Queries quota bucket. Common use cases Request HTTP request GET https://www.googleapis.com/youtube/v3/search Parameters The following table lists the parameters that this query supports. All of the parameters listed are query parameters. Parameters Required parameters part string The part parameter specifies a comma-separated list of one or more search resource properties that the API response will include. Set the parameter value to snippet . Filters (specify 0 or 1 of the following parameters) forContentOwner boolean This parameter can only be us"
+      },
+      {
+        "term": "Search Queries",
+        "text": "ries to only retrieve a specific type of resource. Quota impact: 100 calls per day. A call to this method has a quota cost of 1 unit in the Search Queries quota bucket. Common use cases Request HTTP request GET https://www.googleapis.com/youtube/v3/search Parameters The following table lists the parameters that this query supports. All of the parameters listed are query parameters. Parameters Required parameters part string The part parameter specifies a comma-separated list of one or more search resource properties that the API response will include. Set the parameter value to snippet . Filters (specify 0 or 1 of the following parameters) forContentOwner boolean This parameter can only be used in a properly authorized request , and it is intended exclusively for YouTube content "
+      }
+    ],
+    "verification": "document_verified"
+  },
+  {
+    "id": "S11",
+    "title": "YouTube lecteur timestamp",
+    "url": "https://developers.google.com/youtube/player_parameters",
+    "resolved_url": "https://developers.google.com/youtube/player_parameters",
+    "consulted_on": "2026-10-29",
+    "http_status": 200,
+    "bytes": 114926,
+    "sha256": "2df027a0b8ab8cdd22105e850ee5b0a33c73419c097c859f230aec3f6b0a7a31",
+    "excerpts": [
+      {
+        "term": "start",
+        "text": "ers All of the following parameters are optional. Parameters autoplay This parameter specifies whether the initial video will automatically start to play when the player loads. Supported values are 0 or 1 . The default value is 0 . If you enable Autoplay, playback will occur without any user interaction with the player; playback data collection and sharing will therefore occur upon page load. cc_lang_pref This parameter specifies the default language that the player will use to display captions. Set the parameter's value to an ISO 639-1 two-letter language code or a BCP 47 language tag (such as fr-CA ). If you use this parameter and also set the cc_load_policy parameter to 1 , then the player will show captions in the specified language when the player loads. If you do not also s"
+      }
+    ],
+    "verification": "document_verified"
+  },
+  {
+    "id": "S12",
+    "title": "B2 stockage prix",
+    "url": "https://www.backblaze.com/cloud-storage/pricing",
+    "resolved_url": "https://www.backblaze.com/cloud-storage/pricing",
+    "consulted_on": "2026-10-29",
+    "http_status": 200,
+    "bytes": 243937,
+    "sha256": "381f496f1c1801e7aa669ae779b974e18935649bc85d273e7d36e59a4146eecb",
+    "excerpts": [
+      {
+        "term": "6.95",
+        "text": "kblaze B2 Purpose-built for active archiving, backup, and recovery with compliance, media, and application workload management. Starts at $ 6.95 / TB / mo Get Quote Start Free Pay as you go monthly or for capacity annually No minimum file size or storage duration fees Assisted data migration available Discounts available with volume & term commitments Free egress up to 3x storage Free transactions Backblaze B2 Overdrive Designed to accelerate performance-critical workloads in AI/ML, HPC, research & life sciences, and more. Starts at $ 15 / TB / mo Get Quote Built on the Backblaze B2 foundation, plus: Terabit speed at exabyte scale Dedicated vaults with private networking integration White glove onboarding and support Unlimited free egress Multi-petabyte commitment required Active"
+      },
+      {
+        "term": "GB",
+        "text": "workload to compare modeled costs. You save $0 0% Free egress included this month 0 TB *Up to 3x of average monthly data stored, then $0.01/GB for additional egress This chart features published rates for the U.S. West region. Backblaze competitors’ rates can vary by region, amount stored, and other factors. View API call rate details here . Start Free Contact Sales Our pricing models have nothing to hide Monthly Annually Fundamentals Always-hot object storage Always-hot object storage First 10GB storage is always free. Free 3x monthly egress Free 3x monthly egress Egress above 3x monthly average storage is also free through many CDN and compute partners; otherwise, overage is billed at $0.01 per GB. No minimum file size fees No minimum storage duration fees Free API calls Class "
+      },
+      {
+        "term": "egress",
+        "text": "lly No minimum file size or storage duration fees Assisted data migration available Discounts available with volume & term commitments Free egress up to 3x storage Free transactions Backblaze B2 Overdrive Designed to accelerate performance-critical workloads in AI/ML, HPC, research & life sciences, and more. Starts at $ 15 / TB / mo Get Quote Built on the Backblaze B2 foundation, plus: Terabit speed at exabyte scale Dedicated vaults with private networking integration White glove onboarding and support Unlimited free egress Multi-petabyte commitment required Active archive Low egress, rare deletion Backup & DR Retention-based churn Application storage Frequent reads and deletes Custom Start neutral, then tune it Stored data TB PB Average data stored each month. Monthly egress % o"
+      }
+    ],
+    "verification": "document_verified"
+  },
+  {
+    "id": "S13",
+    "title": "Hetzner cloud prix",
+    "url": "https://www.hetzner.com/cloud/",
+    "resolved_url": "https://www.hetzner.com/cloud/",
+    "consulted_on": "2026-10-29",
+    "http_status": 200,
+    "bytes": 122509,
+    "sha256": "dee9b3086d2a698eb388a4d72069cf0e091a6d905146c2df018b1acea109f5f3",
+    "excerpts": [
+      {
+        "term": "€",
+        "text": "e at any time. Allow all cookies Allow necessary cookies × Choose your location settings Language Deutsch English Français Español Currency € EUR $ USD Country (VAT) Country (VAT) All others Australia Austria Belgium Bulgaria Croatia Cyprus Czech Republic Denmark Estonia Finland France Germany Greece Hungary Ireland Italy Latvia Lithuania Luxembourg Malta Netherlands Norway Poland Portugal Romania Singapore Slovakia Slovenia South Africa Spain Sweden Switzerland Ukraine United Kingdom USA Save settings Automatically translated by AI. Discrepancies or errors may occur. Ask AI Console Robot konsoleH Dedicated Server Finder Find the right server for you AX-Line AMD based performance EX-Line Intel based performance GPU-Line Maximum workloads & ai SX-Line For large amounts of data DX-"
+      },
+      {
+        "term": "VAT",
+        "text": "all cookies Allow necessary cookies × Choose your location settings Language Deutsch English Français Español Currency € EUR $ USD Country (VAT) Country (VAT) All others Australia Austria Belgium Bulgaria Croatia Cyprus Czech Republic Denmark Estonia Finland France Germany Greece Hungary Ireland Italy Latvia Lithuania Luxembourg Malta Netherlands Norway Poland Portugal Romania Singapore Slovakia Slovenia South Africa Spain Sweden Switzerland Ukraine United Kingdom USA Save settings Automatically translated by AI. Discrepancies or errors may occur. Ask AI Console Robot konsoleH Dedicated Server Finder Find the right server for you AX-Line AMD based performance EX-Line Intel based performance GPU-Line Maximum workloads & ai SX-Line For large amounts of data DX-Line Dell server for "
+      }
+    ],
+    "verification": "document_verified"
+  },
+  {
+    "id": "S14",
+    "title": "RGPD",
+    "url": "https://eur-lex.europa.eu/eli/reg/2016/679/oj/eng",
+    "resolved_url": "https://eur-lex.europa.eu/eli/reg/2016/679/oj/eng",
+    "consulted_on": "2026-10-29",
+    "http_status": 202,
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "excerpts": [],
+    "verification": "access_unconfirmed_or_no_relevant_excerpt"
+  },
+  {
+    "id": "S15",
+    "title": "Directive DSM fouille",
+    "url": "https://eur-lex.europa.eu/eli/dir/2019/790/oj/eng",
+    "resolved_url": "https://eur-lex.europa.eu/eli/dir/2019/790/oj/eng",
+    "consulted_on": "2026-10-29",
+    "http_status": 202,
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "excerpts": [],
+    "verification": "access_unconfirmed_or_no_relevant_excerpt"
+  },
+  {
+    "id": "S16",
+    "title": "FFmpeg licence",
+    "url": "https://ffmpeg.org/legal.html",
+    "consulted_on": "2026-10-29",
+    "http_status": 503,
+    "status": "UNAVAILABLE",
+    "verification": "access_unconfirmed_or_no_relevant_excerpt"
+  },
+  {
+    "id": "S17",
+    "title": "OpenCV licence",
+    "url": "https://raw.githubusercontent.com/opencv/opencv/4.10.0/LICENSE",
+    "resolved_url": "https://raw.githubusercontent.com/opencv/opencv/4.10.0/LICENSE",
+    "consulted_on": "2026-10-29",
+    "http_status": 200,
+    "bytes": 11358,
+    "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+    "excerpts": [
+      {
+        "term": "Apache",
+        "text": "\n                                 Apache License\n                           Version 2.0, January 2004\n                        http://www.apache.org/licenses/\n\n   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION\n\n   1. Definitions.\n\n      \"License\" shall mean the terms and conditions for use, reproduction,\n      and distribution as defined by Sections 1 through 9 of this document.\n\n      \"Licensor\" shall mean the copyright owner or entity authorized by\n      the copyright owner that is granting the License.\n\n      \"Legal Entity\" shall mean the union of the acting entity and all\n      other entities that control, are controlled by, or are under common\n      control "
+      }
+    ],
+    "verification": "document_verified"
+  },
+  {
+    "id": "S18",
+    "title": "FastMCP accueil",
+    "url": "https://gofastmcp.com/getting-started/welcome",
+    "resolved_url": "https://gofastmcp.com/getting-started/welcome",
+    "consulted_on": "2026-10-29",
+    "http_status": 200,
+    "bytes": 369450,
+    "sha256": "f7f1fcaa7bfaf170eb6d7441d46b6303ceb259615ecde1a8f592bd9b4731e3b2",
+    "excerpts": [
+      {
+        "term": "MCP",
+        "text": " FastMCP: The Framework for MCP - FastMCP Documentation Index Fetch the complete documentation index at: /llms.txt Use this file to discover all available pages before exploring further. Skip to main content Assistant Responses are generated using AI and may contain mistakes. FastMCP 4 is here — built for the new MCP protocol. See what's new . FastMCP home page v4.0.5 Prefect Horizon PrefectHQ/fastmcp PrefectHQ/fastmcp Search... Navigation Get Started FastMCP: The Framework for MCP Search the docs... ⌘ K Documentation Get Started Welcome! Installation Quickstart Coding Agents What's New Servers Overview Core Components Working with Tools MCP Provi"
+      },
+      {
+        "term": "server",
+        "text": "d FastMCP: The Framework for MCP Search the docs... ⌘ K Documentation Get Started Welcome! Installation Quickstart Coding Agents What's New Servers Overview Core Components Working with Tools MCP Providers Interactivity Extensibility Auth Deployment Apps Overview Quickstart FastMCPApp Interactive Tools Generative UI Custom HTML Reference Clients Overview Client-Only Package Transports Client Groups NEW fastmcp-remote Operations UPDATED Authentication UPDATED Integrations Auth Web Frameworks AI Assistants AI SDKs MCP.json More Settings CLI Upgrading Development What's New FAQ Get Started FastMCP: The Framework for MCP Copy page Copy page FastMCP is the standard framework for building Model Context Protocol (MCP) servers, clients, and interactive applications. Copy page Copy page F"
+      }
+    ],
+    "verification": "document_verified"
+  },
+  {
+    "id": "S19",
+    "title": "YouTube stockage API",
+    "url": "https://developers.google.com/youtube/terms/api-services-terms-of-service",
+    "resolved_url": "https://developers.google.com/youtube/terms/api-services-terms-of-service",
+    "consulted_on": "2026-10-29",
+    "http_status": 200,
+    "bytes": 101889,
+    "sha256": "ab76e7f8a9e2d8103a5e9efdcbec36e89ac5ded8a99e80ec1d6f99e6bfdcac54",
+    "excerpts": [
+      {
+        "term": "copyright",
+        "text": "g the YouTube Community Guidelines) at [select and insert appropriate URL from following paragraph] . Please be sure not to violate others' copyright or privacy rights.\" If the upload is performed on a personal computer or other non-mobile device, the appropriate URL is https://www.youtube.com/t/terms . If the upload is performed on a mobile device, the appropriate URL is http://m.youtube.com/terms . Subject to this Sections 9.1(iii) and (iv) below, API Client(s) that enable users to upload videos to YouTube websites, applications, services or products must provide each user the option to upload the videos to the user's own YouTube channel(s). If your API Client(s) also allow users to upload videos to your YouTube channel, it must (i) provide clear notice of the terms of your lic"
+      },
+      {
+        "term": "license",
+        "text": "(s). If your API Client(s) also allow users to upload videos to your YouTube channel, it must (i) provide clear notice of the terms of your license to those videos including a clear notice to users that you will now either own or have rights to such videos, and (ii) ensure that the option to upload to the user's YouTube channel is featured at least as prominently as the option to upload videos to your YouTube channel. If your API Client (or any part thereof) targets or directs itself to children (as defined under applicable law(s) including the U.S. Children's Online Privacy (COPPA) and E.U. General Data Protection Regulation (GDPR)) (referred to herein as a \" Child-Directed API Client \"), (a) you and your API Client must comply with Section III.J (API Clients Directed to Childre"
+      },
+      {
+        "term": "Content",
+        "text": " YouTube API Services Terms of Service | Google for Developers Skip to main content YouTube / English Deutsch Español Français Indonesia Português – Brasil Русский 中文 – 简体 日本語 한국어 Sign in Home Guides Samples Terms YouTube Home Guides Samples Terms YouTube API Services Terms of Service Terms of Service (Americas) Terms of Service (APAC) Terms of Service (EMEA) Terms of Service (Russia) Developer Policies Required Minimum Functionality Subject API Services Branding Guidelines Revision History Guides Complying with the YouTube's Developer Policies Home Products YouTube Terms YouTube API Services Terms of Service Stay organized with collections Save and categorize content based on your preferences. Note: Complying with t"
+      }
+    ],
+    "verification": "document_verified"
+  },
+  {
+    "id": "S20",
+    "title": "CNIL données mineurs",
+    "url": "https://www.cnil.fr/fr/les-droits-numeriques-des-mineurs",
+    "resolved_url": "https://www.cnil.fr/fr/enjeux-numeriques/les-droits-numeriques-des-mineurs",
+    "consulted_on": "2026-10-29",
+    "http_status": 200,
+    "bytes": 103571,
+    "sha256": "892eccf81527cac0e9d31f8d62a3d281a722a7c5757656bf158f938902fe0896",
+    "excerpts": [
+      {
+        "term": "mineur",
+        "text": " Les droits numériques des mineurs | CNIL Aller au contenu principal Menu de navigation Rechercher Particuliers Professionnels Presse Fr En Gestionnaire de cookies Particuliers Professionnels Presse Ma conformité au RGPD Comprendre le RGPD Qu'est-ce que le RGPD ? Les six grands principes du RGPD Rôles et responsabilités des acteurs MOOC - L'atelier RGPD L'accompagnement de la CNIL Les journées RGPD Les webinaires de la CNIL Le contrôle de la CNIL Me mettre en conformité Par où commencer ? Créer un registre des traitements Choisir une base légale Choisir une durée de conservation Mettre en place un délégué (DPO) Travailler avec un sous-traitant Anonymiser les données Sé"
+      },
+      {
+        "term": "15 ans",
+        "text": " accompagner dans la protection de leurs droits. Lire la recommandation Rechercher le consentement d’un parent pour les mineurs de moins de 15 ans Recommandation 4 Le droit accorde une certaine place au consentement du mineur pour le traitement de ses données, accompagné de celui de ses parents lorsqu’il a moins de 15 ans. Lire la recommandation Promouvoir des outils de contrôle parental respectueux de la vie privée et de l’intérêt de l’enfant Recommandation 5 Les dispositifs de contrôle parental constituent un outil de protection des enfants en ligne. Toutefois, la CNIL appelle à la vigilance face à certaines fonctionnalités très intrusives. Lire la recommandation Renforcer l’information et les droits des mineurs par le design Recommandation 6 Toute personne, même mineure, doit "
+      },
+      {
+        "term": "consentement",
+        "text": "cette mission, ils doivent être mis en capacité de les accompagner dans la protection de leurs droits. Lire la recommandation Rechercher le consentement d’un parent pour les mineurs de moins de 15 ans Recommandation 4 Le droit accorde une certaine place au consentement du mineur pour le traitement de ses données, accompagné de celui de ses parents lorsqu’il a moins de 15 ans. Lire la recommandation Promouvoir des outils de contrôle parental respectueux de la vie privée et de l’intérêt de l’enfant Recommandation 5 Les dispositifs de contrôle parental constituent un outil de protection des enfants en ligne. Toutefois, la CNIL appelle à la vigilance face à certaines fonctionnalités très intrusives. Lire la recommandation Renforcer l’information et les droits des mineurs par le desig"
+      }
+    ],
+    "verification": "document_verified"
+  },
+  {
+    "id": "S21",
+    "title": "TJM indicatifs Malt",
+    "url": "https://www.malt.fr/t/barometre-tarifs",
+    "resolved_url": "https://www.malt.fr/t/barometre-tarifs",
+    "consulted_on": "2026-10-29",
+    "http_status": 200,
+    "bytes": 561796,
+    "sha256": "716c7dfe336163499f566c21158bceaf6e105a45c18080f795b8c63600c59991",
+    "excerpts": [
+      {
+        "term": "data",
+        "text": "ipt Webmasters Webmasters Drupal Webmasters Joomla Webmasters Prestashop Webmasters Spip Webmasters Wordpress Experts cybersécurité Experts Data Data scientists Data scientists NLP Data scientists TensorFlow Data scientists Spark Data scientists R Data scientists Hadoop Experts Jeux Vidéos Game designers Graphistes & Photographes UX designers Graphistes Webdesigners Directeurs artistiques Illustrateurs Motions designers et réalisateurs Sound designers Réalisateurs Motion designers Photographes Rédacteurs & Community Managers Community managers Traducteurs Rédacteurs web Concepteurs rédacteurs Consultants en communication Responsables éditoriaux Chargés de relations presse Social media managers Pigistes Accueil Benchmarks Le baromètre des tarifs freelances S'inscrire sur Malt Tout"
+      },
+      {
+        "term": "500",
+        "text": "édacteurs & Community Managers Envie de rejoindre la planète freelance ? Trouver un freelance Décrocher des projets 18 rue Godot de Mauroy 75009 Paris Aide & Support LinkedIn Pour les entreprises Pourquoi Malt ? Marketplace de freelances Solution de gestion de freelances Fonctionnalités produit Malt Open : solution de portage administratif Demande de démo Pricing Secteur public Santé Energie Media Financial Services Secteur Industriel Conformité des freelances Pour les freelances Pourquoi Malt ? Community & Programmes Fonctionnalités produit Programme Super Malter Freelance Advisory Board Evènements Malt Academy Partenaires Programme d'apport d'affaires Co-work Malt Paris Profils populaires Community Manager Graphistes Data Analysts Rédacteurs web Webdesigners Consultants SEO Ill"
+      },
+      {
+        "term": "tarif",
+        "text": " Quels sont les tarifs 2026 des freelances en France par métier ? | Malt Entreprise Freelances FR Créer mon compte Plateforme Sourcing de talents, Malt Strategy, Ajoutez vos freelances, Ajoutez vos agences, Centralisation des talents indépendants, Gestion des contrats & projets, Paiement rapide & sécurisé, Conformité, Analyses & reporting, Intégrations Pools de talents Sourcing de talents Malt Strategy Ajoutez vos freelances Ajoutez vos agences Freelance Management System Centralisation des talents indépendants Gestion des contrats & projets Paiement rapide & sécurisé Conformité Analyses & reporting Intégrations Consultants Malt Strategy Via notre plateforme"
+      }
+    ],
+    "verification": "document_verified"
+  },
+  {
+    "id": "S22",
+    "title": "BCE devises",
+    "url": "https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml",
+    "resolved_url": "https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml",
+    "consulted_on": "2026-10-29",
+    "http_status": 200,
+    "bytes": 1547,
+    "sha256": "3dec724a631c4a448596a2b90ac1d839728d871353fc8fdd4555ca3456776d15",
+    "excerpts": [],
+    "verification": "document_verified",
+    "observed_data": {
+      "date": "2026-10-28",
+      "USD_per_EUR": "1.1133"
+    }
+  },
+  {
+    "id": "S23",
+    "title": "CPI reproduction",
+    "url": "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000006278911",
+    "resolved_url": "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000006278911",
+    "consulted_on": "2026-10-29",
+    "http_status": 200,
+    "bytes": 117752,
+    "sha256": "ef4df1d52f396c3b140aed8982ec9b97febd197ca194c0bb260112f5e7009717",
+    "excerpts": [
+      {
+        "term": "consentement",
+        "text": "et 1992 Création Loi 92-597 1992-07-01 annexe JORF 3 juillet 1992 Toute représentation ou reproduction intégrale ou partielle faite sans le consentement de l'auteur ou de ses ayants droit ou ayants cause est illicite. Il en est de même pour la traduction, l'adaptation ou la transformation, l'arrangement ou la reproduction par un art ou un procédé quelconque. Voir les versions Comparer les versions Textes liés Informations pratiques Fermer Code de la propriété intellectuelle En vigueur au 29/10/2026 En vigueur au 29 octobre 2026 Ouvrir Réduire Chapitre II : Droits patrimoniaux Article précédent - Article suivant Version à la date d’aujourd'hui Imprimer la page Copier le texte Naviguer dans les résultats Article précédent Article suivant Haut de page L'aide Légifrance Pour vous acc"
+      },
+      {
+        "term": "reproduction",
+        "text": "uis le 03 juil. 1992 En vigueur depuis le 03 juillet 1992 Création Loi 92-597 1992-07-01 annexe JORF 3 juillet 1992 Toute représentation ou reproduction intégrale ou partielle faite sans le consentement de l'auteur ou de ses ayants droit ou ayants cause est illicite. Il en est de même pour la traduction, l'adaptation ou la transformation, l'arrangement ou la reproduction par un art ou un procédé quelconque. Voir les versions Comparer les versions Textes liés Informations pratiques Fermer Code de la propriété intellectuelle En vigueur au 29/10/2026 En vigueur au 29 octobre 2026 Ouvrir Réduire Chapitre II : Droits patrimoniaux Article précédent - Article suivant Version à la date d’aujourd'hui Imprimer la page Copier le texte Naviguer dans les résultats Article précédent Article su"
+      }
+    ],
+    "verification": "document_verified"
+  },
+  {
+    "id": "S24",
+    "title": "CNIL principes RGPD",
+    "url": "https://www.cnil.fr/fr/reglement-europeen-protection-donnees/chapitre2",
+    "resolved_url": "https://www.cnil.fr/fr/reglement-europeen-protection-donnees/chapitre2",
+    "consulted_on": "2026-10-29",
+    "http_status": 200,
+    "bytes": 95520,
+    "sha256": "7f0342b7924b2686c04f7839fe356179255bf89058fa8377f89f34675e314731",
+    "excerpts": [
+      {
+        "term": "Article 5",
+        "text": "élibération... Rechercher Accueil Le règlement général sur la protection des données - RGPD CHAPITRE II - Principes CHAPITRE II - Principes Article 5 - Principes relatifs au traitement des données à caractère personnel Article 6 - Licéité du traitement Article 7 - Conditions applicables au consentement Article 8 - Conditions applicables au consentement des enfants en ce qui concerne les services de la société de l'information Article 9 - Traitement portant sur des catégories particulières de données à caractère personnel Article 10 - Traitement des données à caractère personnel relatives aux condamnations pénales et aux infractions Article 11 - Traitement ne nécessitant pas l'identification Imprimer l’article Partager cette page par courriel Diminuer la taille de la police Augmen"
+      },
+      {
+        "term": "Article 6",
+        "text": "nnées - RGPD CHAPITRE II - Principes CHAPITRE II - Principes Article 5 - Principes relatifs au traitement des données à caractère personnel Article 6 - Licéité du traitement Article 7 - Conditions applicables au consentement Article 8 - Conditions applicables au consentement des enfants en ce qui concerne les services de la société de l'information Article 9 - Traitement portant sur des catégories particulières de données à caractère personnel Article 10 - Traitement des données à caractère personnel relatives aux condamnations pénales et aux infractions Article 11 - Traitement ne nécessitant pas l'identification Imprimer l’article Partager cette page par courriel Diminuer la taille de la police Augmenter la taille de la police Modifié par Rectificatif au règlement (UE) 2016/679 "
+      },
+      {
+        "term": "minimisation",
+        "text": "des finalités); c) adéquates, pertinentes et limitées à ce qui est nécessaire au regard des finalités pour lesquelles elles sont traitées ( minimisation des données); d) exactes et, si nécessaire, tenues à jour; toutes les mesures raisonnables doivent être prises pour que les données à caractère personnel qui sont inexactes, eu égard aux finalités pour lesquelles elles sont traitées, soient effacées ou rectifiées sans tarder (exactitude); e) conservées sous une forme permettant l'identification des personnes concernées pendant une durée n'excédant pas celle nécessaire au regard des finalités pour lesquelles elles sont traitées; les données à caractère personnel peuvent être conservées pour des durées plus longues dans la mesure où elles seront traitées exclusivement à des fins ar"
+      }
+    ],
+    "verification": "document_verified"
+  },
+  {
+    "id": "S25",
+    "title": "RGPD texte HTML",
+    "url": "https://eur-lex.europa.eu/legal-content/FR/TXT/HTML/?uri=CELEX:32016R0679",
+    "resolved_url": "https://eur-lex.europa.eu/legal-content/FR/TXT/HTML/?uri=CELEX:32016R0679",
+    "consulted_on": "2026-10-29",
+    "http_status": 202,
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "excerpts": [],
+    "verification": "access_unconfirmed_or_no_relevant_excerpt"
+  },
+  {
+    "id": "S26",
+    "title": "DSM texte HTML",
+    "url": "https://eur-lex.europa.eu/legal-content/FR/TXT/HTML/?uri=CELEX:32019L0790",
+    "resolved_url": "https://eur-lex.europa.eu/legal-content/FR/TXT/HTML/?uri=CELEX:32019L0790",
+    "consulted_on": "2026-10-29",
+    "http_status": 202,
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "excerpts": [],
+    "verification": "access_unconfirmed_or_no_relevant_excerpt"
+  },
+  {
+    "id": "S27",
+    "title": "FFmpeg licence alternative",
+    "url": "https://raw.githubusercontent.com/FFmpeg/FFmpeg/n7.0.2/LICENSE.md",
+    "resolved_url": "https://raw.githubusercontent.com/FFmpeg/FFmpeg/n7.0.2/LICENSE.md",
+    "consulted_on": "2026-10-29",
+    "http_status": 200,
+    "bytes": 4376,
+    "sha256": "cb48bf09a11f5fb576cddb0431c8f5ed0a60157a9ec942adffc13907cbe083f2",
+    "excerpts": [
+      {
+        "term": "LGPL",
+        "text": "# License\n\nMost files in FFmpeg are under the GNU Lesser General Public License version 2.1\nor later (LGPL v2.1+). Read the file `COPYING.LGPLv2.1` for details. Some other\nfiles have MIT/X11/BSD-style licenses. In combination the LGPL v2.1+ applies to\nFFmpeg.\n\nSome optional parts of FFmpeg are licensed under the GNU General Public License\nversion 2 or later (GPL v2+). See the file `COPYING.GPLv2` for details. None of\nthese parts are used by default, you have to explicitly pass `--enable-gpl` to\nconfigure to activate them. In this case, FFmpeg's license changes to GPL v2+.\n\nSpecifically, the GPL parts of FFmpeg are:\n\n- libpostproc\n- optional x86 optimization in the files\n    - `libavcodec/x86/flac_dsp_gpl.asm`\n    - `libavcodec/x86/idct_mmx.c`"
+      },
+      {
+        "term": "GPL",
+        "text": "# License\n\nMost files in FFmpeg are under the GNU Lesser General Public License version 2.1\nor later (LGPL v2.1+). Read the file `COPYING.LGPLv2.1` for details. Some other\nfiles have MIT/X11/BSD-style licenses. In combination the LGPL v2.1+ applies to\nFFmpeg.\n\nSome optional parts of FFmpeg are licensed under the GNU General Public License\nversion 2 or later (GPL v2+). See the file `COPYING.GPLv2` for details. None of\nthese parts are used by default, you have to explicitly pass `--enable-gpl` to\nconfigure to activate them. In this case, FFmpeg's license changes to GPL v2+.\n\nSpecifically, the GPL parts of FFmpeg are:\n\n- libpostproc\n- optional x86 optimization in the files\n    - `libavcodec/x86/flac_dsp_gpl.asm`\n    - `libavcodec/x86/idct_mmx.c`\n"
+      }
+    ],
+    "verification": "document_verified"
+  },
+  {
+    "id": "S28",
+    "title": "Hetzner prix produit",
+    "url": "https://www.hetzner.com/cloud/#pricing",
+    "resolved_url": "https://www.hetzner.com/cloud/#pricing",
+    "consulted_on": "2026-10-29",
+    "http_status": 200,
+    "bytes": 122509,
+    "sha256": "dee9b3086d2a698eb388a4d72069cf0e091a6d905146c2df018b1acea109f5f3",
+    "excerpts": [
+      {
+        "term": "month",
+        "text": "g Server Auction Refurbished dedicated deals Server Auction Save money and do good for the planet with refurbished servers from € 72.70 per month, excl. VAT Cloud Cloud Overview Affordable Cloud Hosting Cost-Optimized Perfect for test environments Regular Performance Best price-performance ratio General Purpose Ideal for business applications European Cloud Lower costs, more data sovereignty – with Hetzner Cloud Storage Object Storage S3-compatible storage Storage Box Cheap backup servers Sovereignty starts with hosting it yourself Start self-hosting with Hetzner Managed Web & Mail Webhosting Simple & cheap web hosting Domain Check Search for domains Registration Robot Domain registration Servers Managed Server Fully managed servers Cloud Storage Storage Share GDPR-compliant stor"
+      }
+    ],
+    "verification": "document_verified"
+  },
+  {
+    "id": "S29",
+    "title": "AWS Lightsail tarifs Linux",
+    "url": "https://aws.amazon.com/lightsail/pricing/",
+    "resolved_url": "https://aws.amazon.com/lightsail/pricing/",
+    "consulted_on": "2026-10-29",
+    "http_status": 200,
+    "bytes": 497001,
+    "sha256": "75eb43ed722651d1227521d35d77fda3e0c933724fb6b8b12de715abff3d720a",
+    "excerpts": [
+      {
+        "term": "$24",
+        "text": "TB Transfer* $7 USD/mo 1 GB Memory 2 vCPUs*** 40 GB SSD Disk 2 TB Transfer* $12 USD/mo 2 GB Memory 2 vCPUs*** 60 GB SSD Disk 3 TB Transfer* $24 USD/mo 4 GB Memory 2 vCPUs 80 GB SSD Disk 4 TB Transfer* $44 USD/mo 8 GB Memory 2 vCPUs 160 GB SSD Disk 5 TB Transfer* $84 USD/mo 16 GB Memory 4 vCPUs 320 GB SSD Disk 6 TB Transfer* $164 USD/mo 32 GB Memory 8 vCPUs 640 GB SSD Disk 7 TB Transfer* $384 USD/mo 64 GB Memory 16 vCPUs 1280 GB SSD Disk 8 TB Transfer* $884 USD/mo 128 GB Memory 32 vCPUs 1280 GB SSD Disk 9 TB Transfer* $1,324 USD/mo 192 GB Memory 48 vCPUs 1280 GB SSD Disk 10 TB Transfer* $1,764 USD/mo 256 GB Memory 64 vCPUs 1280 GB SSD Disk 10 TB Transfer* Memory optimized $74 USD/mo 16 GB Memory 2 vCPUs 160 GB SSD Disk 5 TB Transfer* $144 USD/mo 32 GB Memory 4 vCPUs 320 GB SSD Dis"
+      },
+      {
+        "term": "24 USD",
+        "text": "B Transfer* $7 USD/mo 1 GB Memory 2 vCPUs*** 40 GB SSD Disk 2 TB Transfer* $12 USD/mo 2 GB Memory 2 vCPUs*** 60 GB SSD Disk 3 TB Transfer* $24 USD/mo 4 GB Memory 2 vCPUs 80 GB SSD Disk 4 TB Transfer* $44 USD/mo 8 GB Memory 2 vCPUs 160 GB SSD Disk 5 TB Transfer* $84 USD/mo 16 GB Memory 4 vCPUs 320 GB SSD Disk 6 TB Transfer* $164 USD/mo 32 GB Memory 8 vCPUs 640 GB SSD Disk 7 TB Transfer* $384 USD/mo 64 GB Memory 16 vCPUs 1280 GB SSD Disk 8 TB Transfer* $884 USD/mo 128 GB Memory 32 vCPUs 1280 GB SSD Disk 9 TB Transfer* $1,324 USD/mo 192 GB Memory 48 vCPUs 1280 GB SSD Disk 10 TB Transfer* $1,764 USD/mo 256 GB Memory 64 vCPUs 1280 GB SSD Disk 10 TB Transfer* Memory optimized $74 USD/mo 16 GB Memory 2 vCPUs 160 GB SSD Disk 5 TB Transfer* $144 USD/mo 32 GB Memory 4 vCPUs 320 GB SSD Disk"
+      },
+      {
+        "term": "4 GB",
+        "text": "* $7 USD/mo 1 GB Memory 2 vCPUs*** 40 GB SSD Disk 2 TB Transfer* $12 USD/mo 2 GB Memory 2 vCPUs*** 60 GB SSD Disk 3 TB Transfer* $24 USD/mo 4 GB Memory 2 vCPUs 80 GB SSD Disk 4 TB Transfer* $44 USD/mo 8 GB Memory 2 vCPUs 160 GB SSD Disk 5 TB Transfer* $84 USD/mo 16 GB Memory 4 vCPUs 320 GB SSD Disk 6 TB Transfer* $164 USD/mo 32 GB Memory 8 vCPUs 640 GB SSD Disk 7 TB Transfer* $384 USD/mo 64 GB Memory 16 vCPUs 1280 GB SSD Disk 8 TB Transfer* $884 USD/mo 128 GB Memory 32 vCPUs 1280 GB SSD Disk 9 TB Transfer* $1,324 USD/mo 192 GB Memory 48 vCPUs 1280 GB SSD Disk 10 TB Transfer* $1,764 USD/mo 256 GB Memory 64 vCPUs 1280 GB SSD Disk 10 TB Transfer* Memory optimized $74 USD/mo 16 GB Memory 2 vCPUs 160 GB SSD Disk 5 TB Transfer* $144 USD/mo 32 GB Memory 4 vCPUs 320 GB SSD Disk 6 TB Tran"
+      },
+      {
+        "term": "8 GB",
+        "text": "er* $12 USD/mo 2 GB Memory 2 vCPUs*** 60 GB SSD Disk 3 TB Transfer* $24 USD/mo 4 GB Memory 2 vCPUs 80 GB SSD Disk 4 TB Transfer* $44 USD/mo 8 GB Memory 2 vCPUs 160 GB SSD Disk 5 TB Transfer* $84 USD/mo 16 GB Memory 4 vCPUs 320 GB SSD Disk 6 TB Transfer* $164 USD/mo 32 GB Memory 8 vCPUs 640 GB SSD Disk 7 TB Transfer* $384 USD/mo 64 GB Memory 16 vCPUs 1280 GB SSD Disk 8 TB Transfer* $884 USD/mo 128 GB Memory 32 vCPUs 1280 GB SSD Disk 9 TB Transfer* $1,324 USD/mo 192 GB Memory 48 vCPUs 1280 GB SSD Disk 10 TB Transfer* $1,764 USD/mo 256 GB Memory 64 vCPUs 1280 GB SSD Disk 10 TB Transfer* Memory optimized $74 USD/mo 16 GB Memory 2 vCPUs 160 GB SSD Disk 5 TB Transfer* $144 USD/mo 32 GB Memory 4 vCPUs 320 GB SSD Disk 6 TB Transfer* $294 USD/mo 64 GB Memory 8 vCPUs 640 GB SSD Disk 7 TB T"
+      },
+      {
+        "term": "IPv4",
+        "text": "er, you can get started with Amazon Lightsail for free. Check out the AWS Free Tier FAQs to learn more. Virtual servers Bundles with public IPv4 address Linux/Unix Windows Linux/Unix General Purpose $5 USD/mo 0.5 GB Memory 2 vCPUs*** 20 GB SSD Disk 1 TB Transfer* $7 USD/mo 1 GB Memory 2 vCPUs*** 40 GB SSD Disk 2 TB Transfer* $12 USD/mo 2 GB Memory 2 vCPUs*** 60 GB SSD Disk 3 TB Transfer* $24 USD/mo 4 GB Memory 2 vCPUs 80 GB SSD Disk 4 TB Transfer* $44 USD/mo 8 GB Memory 2 vCPUs 160 GB SSD Disk 5 TB Transfer* $84 USD/mo 16 GB Memory 4 vCPUs 320 GB SSD Disk 6 TB Transfer* $164 USD/mo 32 GB Memory 8 vCPUs 640 GB SSD Disk 7 TB Transfer* $384 USD/mo 64 GB Memory 16 vCPUs 1280 GB SSD Disk 8 TB Transfer* $884 USD/mo 128 GB Memory 32 vCPUs 1280 GB SSD Disk 9 TB Transfer* $1,324 USD/mo 19"
+      }
+    ],
+    "verification": "document_verified"
+  },
+  {
+    "id": "S30",
+    "title": "YouTube videos.list",
+    "url": "https://developers.google.com/youtube/v3/docs/videos/list",
+    "resolved_url": "https://developers.google.com/youtube/data/reference/rest/v3/videos/list",
+    "consulted_on": "2026-10-29",
+    "http_status": 200,
+    "bytes": 105054,
+    "sha256": "e818e17713408b542e95beebe04df22547ad465b4586fc25ee8299a665069bf8",
+    "excerpts": [
+      {
+        "term": "Quota impact",
+        "text": "zed with collections Save and categorize content based on your preferences. Returns a list of videos that match the API request parameters. Quota impact: A call to this method has a quota cost of 1 unit. Common use cases Request HTTP request GET https://www.googleapis.com/youtube/v3/videos Parameters The following table lists the parameters that this query supports. All of the parameters listed are query parameters. Parameters Required parameters part string The part parameter specifies a comma-separated list of one or more video resource properties that the API response will include. If the parameter identifies a property that contains child properties, the child properties will be included in the response. For example, in a video resource, the snippet property contains the chan"
+      },
+      {
+        "term": "1 unit",
+        "text": "n your preferences. Returns a list of videos that match the API request parameters. Quota impact: A call to this method has a quota cost of 1 unit. Common use cases Request HTTP request GET https://www.googleapis.com/youtube/v3/videos Parameters The following table lists the parameters that this query supports. All of the parameters listed are query parameters. Parameters Required parameters part string The part parameter specifies a comma-separated list of one or more video resource properties that the API response will include. If the parameter identifies a property that contains child properties, the child properties will be included in the response. For example, in a video resource, the snippet property contains the channelId , title , description , tags , and categoryId prop"
+      }
+    ],
+    "verification": "document_verified"
+  }
+]

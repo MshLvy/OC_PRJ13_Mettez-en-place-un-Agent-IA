@@ -1,0 +1,30 @@
+flowchart TB
+ subgraph NOW[POC actuel — conservé sans modification]
+ U[Angular : position et snapshot validés] --> F[FastAPI / LangGraph]
+ F --> P[RAG BM25/BGE/Milvus et générateurs existants]
+ F --> Y[YouTube métadonnées J05/I10]
+ F --> S[MongoDB séances I11 optionnel]
+ end
+ subgraph FUTURE[Conception future — aucun service implémenté]
+ F -. action vidéo explicite .-> C[Client MCP côté backend]
+ C -->|stdio local ou Streamable HTTP authentifié| M[Serveur MCP : search_video_positions / get_video_match]
+ M --> G[Validation entrée, scope read, limites, état des droits]
+ G --> X[Index exact vidéo dédié : layout / rule_state / full_fen]
+ X --> O[Résultat borné : intervalle PTS, incertitude, provenance, match_kind]
+ O --> V[Garde FastAPI : même snapshot, droits actifs, pas de faux FEN complet]
+ V --> U
+ A[Fichiers originaux fournis sous droits + PGN optionnel] --> R[Admission opérateur : licence, finalité, rétention]
+ R --> B[Stockage privé original et dérivés, séparé des volumes actuels]
+ R --> D[Manifeste droits : asset hash, contrat, dates, révision]
+ B --> W[Worker sandbox : décodage, échantillonnage PTS, budgets]
+ W --> T[Échiquier, orientation, classification 64 cases et confiance]
+ T --> H[Segments / variantes / validation temporelle python-chess]
+ A -. historique PGN validé et ancrages fournis .-> H
+ H --> Q[Revue qualité + droits : publier ou s'abstenir]
+ Q --> X
+ D --> G
+ D --> Q
+ D --> Z[Retrait : blocage immédiat, purge dérivés/index/backups selon politique]
+ Z --> B
+ Z --> X
+ end

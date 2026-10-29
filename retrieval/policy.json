@@ -1,0 +1,52 @@
+{
+  "bge_manifest_sha256": "37c3b601efc366563ca9dba7c17495e8e54fe4fb7bc768d215f7af0de4db4a19",
+  "budget": {
+    "address_space_bytes": 8589934592,
+    "cpu_s": 1700,
+    "documents": 96,
+    "min_disk_free_bytes": 536870912,
+    "min_memory_free_bytes": 4294967296,
+    "output_bytes": 8388608,
+    "topk": 3,
+    "wall_s": 1800
+  },
+  "collection": "p13_openings_bge_1024_v1",
+  "corpus_manifest_sha256": "7eb6b10749b1d09985139cb4fa89a5f2b11d75aa4ae2499e4614937923f86064",
+  "count": 96,
+  "dependencies": {
+    "accelerate": "0.34.2",
+    "chess": "1.11.2",
+    "grpcio": "1.67.1",
+    "huggingface-hub": "0.25.2",
+    "numpy": "2.2.6",
+    "protobuf": "5.29.5",
+    "psutil": "6.0.0",
+    "pydantic": "2.14.1",
+    "pymilvus": "2.5.16",
+    "safetensors": "0.4.5",
+    "tokenizers": "0.19.1",
+    "torch": "2.5.1+cpu",
+    "transformers": "4.44.2"
+  },
+  "human_review": "pending",
+  "id": "p13-release-bge-dense-v1",
+  "model": {
+    "batch_size": 1,
+    "device": "cpu",
+    "dimension": 1024,
+    "dtype": "float32",
+    "id": "BAAI/bge-m3",
+    "index": "FLAT",
+    "license_declared": "MIT",
+    "max_tokens": 512,
+    "metric": "IP",
+    "normalization": "L2",
+    "pooling": "CLS",
+    "prefix": null,
+    "revision": "5617a9f61b028005a4858fdac845db406aefb181",
+    "seed": 0,
+    "threads": 1,
+    "truncation": "refuse"
+  },
+  "production_approved": false
+}

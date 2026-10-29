@@ -1,0 +1,80 @@
+#!/usr/bin/env python3
+"""Release-only operations. No remote daemon, legacy volume or destructive cleanup."""
+import argparse,json,os,socket,subprocess,sys,urllib.request
+from pathlib import Path
+ROOT=Path(__file__).resolve().parents[1];PROJECT='p13-release'
+DOCKER=['docker','--host=unix:///var/run/docker.sock']
+def run(args,capture=False):return subprocess.run(args,cwd=ROOT,check=True,text=True,stdout=subprocess.PIPE if capture else None)
+def compose(*overlays):return DOCKER+['compose','--project-name',PROJECT,'--project-directory',str(ROOT),'-f','compose.yaml']+sum((['-f',f'compose.{x}.yaml'] for x in overlays),[])
+def owner_guard():
+ for logical in ('milvus-data','sessions-data'):
+  name=PROJECT+'_'+logical
+  names=run(DOCKER+['volume','ls','--filter','name=^'+name+'$','--format','{{.Name}}'],True).stdout.split()
+  if names:
+   labels=json.loads(run(DOCKER+['volume','inspect',name,'--format','{{json .Labels}}'],True).stdout)
+   if not labels or labels.get('com.docker.compose.project')!=PROJECT or labels.get('com.docker.compose.volume')!=logical:raise ValueError('RELEASE_VOLUME_OWNERSHIP_REFUSED')
+ # Only this explicitly named project is ever operated on.
+ return True
+def running(service):
+ return bool(run(DOCKER+['ps','-q','--filter','label=com.docker.compose.project='+PROJECT,'--filter','label=com.docker.compose.service='+service],True).stdout.strip())
+def active_overlays():
+ ids=run(DOCKER+['ps','-q','--filter','label=com.docker.compose.project='+PROJECT,'--filter','label=com.docker.compose.service=backend'],True).stdout.split()
+ if len(ids)>1:raise ValueError('SINGLE_RELEASE_BACKEND_REQUIRED')
+ nets=json.loads(run(DOCKER+['inspect',ids[0],'--format','{{json .NetworkSettings.Networks}}'],True).stdout) if ids else {}
+ return (['milvus','bge'] if PROJECT+'_milvus-internal' in nets or running('advisor-bge') else [])+(['mongodb'] if PROJECT+'_sessions-internal' in nets or running('mongodb') else [])
+def app_ports_guard():
+ # Same browser origin as validated code. A pre-existing DEV app is NOT stopped.
+ for port,service in [(5173,'frontend'),(8001,'backend')]:
+  with socket.socket() as sock:
+   try:sock.bind(('127.0.0.1',port))
+   except OSError:
+    if not running(service):raise ValueError('PORT_OCCUPIED_NO_AUTOMATIC_STOP')
+def smoke():
+ # Fixed loopback only. No videos/generation/engine/dense search.
+ def request(path,body=None):
+  raw=None if body is None else json.dumps(body).encode()
+  req=urllib.request.Request('http://127.0.0.1:8001'+path,data=raw,headers={'Content-Type':'application/json'})
+  with urllib.request.urlopen(req,timeout=5) as response:
+   data=json.loads(response.read(65537));return response.status,data,dict(response.headers)
+ status,body,_=request('/api/v1/healthcheck')
+ if status!=200 or body!={'status':'ok'}:raise ValueError('HEALTH_FAILED')
+ status,body,headers=request('/api/v1/game/state',{'history':[]})
+ if status!=200 or headers.get('X-Workflow-Graph',headers.get('x-workflow-graph'))!='p13_global_v1':raise ValueError('WORKFLOW_FAILED')
+ print('SMOKE_PASS health + legal game/state + root workflow; no provider, engine, generation or DB write')
+def main():
+ p=argparse.ArgumentParser(description=__doc__);p.add_argument('action',choices=['setup','doctor','start','stop','reload-api','milvus-start','mongo-start','bge-build','bge-index','bge-start','local-start','graph','smoke']);p.add_argument('--approve-new-release-collection',action='store_true');a=p.parse_args()
+ if a.action=='setup':
+  # New private file only, no secret generation, no reading of an existing .env.
+  with (ROOT/'.env').open('x') as dest:dest.write((ROOT/'.env.example').read_text())
+  (ROOT/'.env').chmod(0o600);print('NEW_PRIVATE_CONFIG_CREATED_NO_KEYS');return
+ if a.action=='smoke':smoke();return
+ owner_guard()
+ if a.action in ('bge-build','bge-index','bge-start'):
+  os.environ.setdefault('BGE_UID',str(os.getuid()) if os.getuid()!=0 else '10001')
+  os.environ.setdefault('BGE_GID',str(os.getgid()) if os.getuid()!=0 else '10001')
+  if not os.environ['BGE_UID'].isdigit() or int(os.environ['BGE_UID'])==0 or not os.environ['BGE_GID'].isdigit():raise ValueError('BGE_NON_ROOT_UID_REQUIRED')
+ if a.action=='doctor':
+  run(compose(*active_overlays())+['ps']);print('Project-scoped status only; provider/model/database functionality not inferred.');return
+ if a.action=='start':
+  app_ports_guard();run(compose(*active_overlays())+['up','-d','--build','--wait','backend','frontend'])
+ elif a.action=='stop':run(compose()+['stop','frontend','backend'])
+ elif a.action=='reload-api':run(compose(*active_overlays())+['up','-d','--no-deps','--no-build','--wait','backend'])
+ elif a.action=='milvus-start':run(compose('milvus')+['up','-d','--wait','milvus'])
+ elif a.action=='mongo-start':
+  # Existing credentials must match any existing volume; never regenerate/reset.
+  run(compose('mongodb')+['up','-d','--wait','mongodb'])
+  extra=active_overlays()
+  if 'mongodb' not in extra:extra.append('mongodb')
+  run(compose(*extra)+['up','-d','--no-deps','--no-build','backend'])
+ elif a.action=='bge-build':run(compose('milvus','bge')+['build','advisor-bge'])
+ elif a.action=='bge-index':
+  if not a.approve_new_release_collection:raise ValueError('NEW_RELEASE_COLLECTION_APPROVAL_REQUIRED')
+  run(compose('milvus','bge')+['run','--rm','--no-deps','--no-build','bge-index','python','-m','retrieval.index','--approve-new-release-collection'])
+ elif a.action=='bge-start':
+  app_ports_guard();extra=['milvus','bge']+(['mongodb'] if running('mongodb') else [])
+  run(compose(*extra)+['up','-d','--no-build','--no-deps','--wait','--wait-timeout','480','advisor-bge','backend','frontend'])
+ elif a.action=='local-start':run(compose('local')+['up','-d','--no-deps','--no-build','--wait','advisor-local'])
+ elif a.action=='graph':run(compose()+['exec','-T','backend','python','-c',"from app.workflow import build_workflow; g,children=build_workflow(); print(g.get_graph(xray=True).draw_mermaid())"])
+if __name__=='__main__':
+ try:main()
+ except (ValueError,OSError,subprocess.CalledProcessError):raise SystemExit('RELEASE_COMMAND_REFUSED: check prerequisites and project ownership; no cleanup or retry')

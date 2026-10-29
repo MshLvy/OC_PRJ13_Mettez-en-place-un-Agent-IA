@@ -1,0 +1,13 @@
+flowchart TB
+ U["Navigateur local 5173"] --> F["Frontend Angular"]
+ F --> B["FastAPI interne 8000 / hôte 8001"]
+ B --> G["LangGraph parent et quatre branches"]
+ G --> SF["Stockfish UCI borné"]
+ G --> W["BGE optionnel - HTTP interne 8090"]
+ W --> M["Milvus RELEASE neuf - FLAT/IP 1024D"]
+ M --- MV["p13-release_milvus-data"]
+ G --> MO["Mongo optionnel - authentifié"]
+ MO --- MS["p13-release_sessions-data"]
+ G --> Q["Qwen / llama.cpp optionnel"]
+ G --> API["Lichess / YouTube / Mistral ou Groq - opt-in"]
+ N["Pas de ports publics des bases ou modèles ; pas de volumes externes"]

@@ -1,0 +1,154 @@
+{
+  "inputs": {
+    "date": "2026-10-29",
+    "currency": "EUR HT unless USD explicitly stated",
+    "usd_per_eur": 1.1133,
+    "fx_source": "S22, ECB 2026-10-28",
+    "storage_usd_per_gb_month": 0.00695,
+    "storage_source": "S12, starts at 6.95 USD/TB/month, decimal GB, no free-tier deduction",
+    "dev_day_eur": 600,
+    "review_day_eur": 350,
+    "legal_day_eur": 900,
+    "hours_per_day": 7,
+    "contingency": 0.25,
+    "frame_interval_seconds": 2,
+    "source_mbps": 2,
+    "thumbnail_kb": 25,
+    "metadata_kb": 2,
+    "copies": 2,
+    "new_catalogue_fraction_month": 0.1,
+    "model_cpu_seconds_frame": 0.25,
+    "decode_core_hours_video_hour": 0.15,
+    "processing_overhead": 1.3,
+    "review_minutes_new_video": 10,
+    "rights_setup_eur": 0,
+    "rights_month_eur": 0
+  },
+  "work_packages_dev_days": [
+    [
+      "Cadrage et exigences/droits",
+      2
+    ],
+    [
+      "Corpus et outillage annotation",
+      3
+    ],
+    [
+      "Vision 2D limitée",
+      6
+    ],
+    [
+      "Séquences et index exact",
+      4
+    ],
+    [
+      "MCP et sécurité",
+      3
+    ],
+    [
+      "Interface et contexte",
+      2
+    ],
+    [
+      "Tests et exploitation",
+      4
+    ]
+  ],
+  "build_low": {
+    "dev_days": 18,
+    "review_days": 3,
+    "legal_days": 1,
+    "subtotal_eur": 12750,
+    "contingency_eur": 3187.5,
+    "total_eur": 15937.5
+  },
+  "build_central": {
+    "dev_days": 24,
+    "review_days": 5,
+    "legal_days": 2,
+    "subtotal_eur": 17950,
+    "contingency_eur": 4487.5,
+    "total_eur": 22437.5
+  },
+  "build_high": {
+    "dev_days": 32,
+    "review_days": 8,
+    "legal_days": 3,
+    "subtotal_eur": 24700,
+    "contingency_eur": 6175.0,
+    "total_eur": 30875.0
+  },
+  "alternative_pgn": {
+    "dev_days": 8,
+    "review_days": 3,
+    "legal_days": 1,
+    "subtotal_eur": 6750,
+    "contingency_eur": 1687.5,
+    "total_eur": 8437.5
+  },
+  "scenarios": [
+    {
+      "name": "A - MVP 20 vidéos",
+      "videos": 20,
+      "minutes_each": 20,
+      "catalogue_video_hours": 6.666666666666667,
+      "sampled_frames": 12000,
+      "source_gb": 6.0,
+      "thumbnails_gb": 0.3,
+      "metadata_gb": 0.024,
+      "stored_gb_two_copies": 12.648,
+      "initial_cpu_core_hours": 2.3833333333333337,
+      "monthly_cpu_core_hours": 0.2383333333333334,
+      "cpu_sensitivity_initial_core_hours": [
+        0.8666666666666668,
+        8.666666666666668
+      ],
+      "vm_usd_month": 24,
+      "storage_usd_month": 0.0879036,
+      "infrastructure_usd_month": 24.0879036,
+      "infrastructure_eur_month": 21.63648935596874,
+      "maintenance_hours_month": 2,
+      "human_eur_month": 188.09523809523807,
+      "opex_eur_month": 209.7317274512068,
+      "initial_search_calls_if_one_per_video": 20,
+      "metadata_refresh_calls_per_30d": 1
+    },
+    {
+      "name": "B - catalogue 200 vidéos",
+      "videos": 200,
+      "minutes_each": 30,
+      "catalogue_video_hours": 100.0,
+      "sampled_frames": 180000,
+      "source_gb": 90.0,
+      "thumbnails_gb": 4.5,
+      "metadata_gb": 0.36,
+      "stored_gb_two_copies": 189.72,
+      "initial_cpu_core_hours": 35.75,
+      "monthly_cpu_core_hours": 3.575,
+      "cpu_sensitivity_initial_core_hours": [
+        13.0,
+        130.0
+      ],
+      "vm_usd_month": 44,
+      "storage_usd_month": 1.318554,
+      "infrastructure_usd_month": 45.318554,
+      "infrastructure_eur_month": 40.70650678164017,
+      "maintenance_hours_month": 4,
+      "human_eur_month": 509.5238095238095,
+      "opex_eur_month": 550.2303163054497,
+      "initial_search_calls_if_one_per_video": 200,
+      "metadata_refresh_calls_per_30d": 4
+    }
+  ],
+  "scale_initial_extra_review_eur": 1500.0,
+  "rights_sensitivity_month_eur": [
+    0,
+    200,
+    1000
+  ],
+  "claimed_inference_benchmark": false,
+  "first_year_eur": {
+    "A": 24954.28072941448,
+    "B": 30540.263795665396
+  }
+}

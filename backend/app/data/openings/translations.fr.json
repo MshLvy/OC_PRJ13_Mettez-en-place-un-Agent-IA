@@ -1,0 +1,15 @@
+{
+  "schema": 1,
+  "language": "fr",
+  "editorial_status": "project_editorial_pending_human_review",
+  "author": "Projet 13 — traductions éditoriales originales et restreintes",
+  "source": "Noms de familles anglais vérifiés dans lichess-org/chess-openings à a6189a30dc273ccb21fc2536a9a2fefd5592a67a ; aucun nom de variante traduit",
+  "families": {
+    "Sicilian Defense": "Défense sicilienne",
+    "French Defense": "Défense française",
+    "Caro-Kann Defense": "Défense Caro-Kann",
+    "Italian Game": "Partie italienne",
+    "Ruy Lopez": "Partie espagnole",
+    "Queen's Gambit": "Gambit dame"
+  }
+}

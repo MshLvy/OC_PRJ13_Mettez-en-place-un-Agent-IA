@@ -1,0 +1,42 @@
+# Optional local sessions only. No dependency from the normal backend startup.
+services:
+  backend:
+    networks:
+      sessions-internal: {}
+  mongodb:
+    image: mongo:7.0@sha256:8bb4442761a63a8dda452744082cdac9644b429807eb977b42324a63cef59ca4
+    entrypoint: [/bin/bash, /opt/p13/mongo-entrypoint.sh]
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: p13_bootstrap_admin
+      MONGO_INITDB_ROOT_PASSWORD: "${MONGO_ADMIN_PASSWORD:?private bootstrap password required}"
+      MONGO_INITDB_DATABASE: p13_sessions
+      MONGO_PASSWORD: "${MONGO_PASSWORD:?private application password required}"
+    volumes:
+      - sessions-data:/data/db
+      - type: bind
+        source: ./infra/mongodb/entrypoint.sh
+        target: /opt/p13/mongo-entrypoint.sh
+        read_only: true
+      - type: bind
+        source: ./infra/mongodb/10-sessions.js
+        target: /docker-entrypoint-initdb.d/10-sessions.js
+        read_only: true
+    networks: [sessions-internal]
+    tmpfs:
+      - /tmp:size=64m,mode=1777
+      - /data/configdb:size=8m,uid=999,gid=999
+    healthcheck:
+      test: [CMD, mongosh, --quiet, --host, 127.0.0.1, --eval, "const d=db.getSiblingDB('p13_sessions'); d.auth('p13_sessions',process.env.MONGO_PASSWORD); const s=d.runCommand({connectionStatus:1}); if(!s.authInfo.authenticatedUsers.some(u=>u.user==='p13_sessions'&&u.db==='p13_sessions'))quit(1); quit(0)"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 30s
+    cpus: 1.0
+    mem_limit: 512m
+    pids_limit: 128
+    command: [mongod, --auth, --wiredTigerCacheSizeGB, '0.25', --quiet, --profile, '0', --slowms, '2147483647']
+networks:
+  sessions-internal:
+    internal: true
+volumes:
+  sessions-data:

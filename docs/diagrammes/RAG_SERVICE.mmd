@@ -1,0 +1,14 @@
+flowchart TD
+ A["Question + FEN/historique/snapshot + intention"] --> C{Contexte admissible ?}
+ C -->|non| X["Abstention / invalidité"]
+ C -->|oui| L["BM25 et admission exacte"]
+ L --> D{BGE disponible ?}
+ D -->|oui| B["Embedding réel + Milvus read-only"]
+ B --> F["Filtrage scope et fusion RRF60"]
+ D -->|non| R["Repli lexical déclaré"]
+ F --> E["Max3passages attribués"]
+ R --> E
+ E --> Q{Génération demandée ?}
+ Q -->|non| S["Sources seules"]
+ Q -->|oui| G["Qwen local ou API configurée selon mode"]
+ G --> V["Validation JSON/citations/scope/UCI, sinon refus"]

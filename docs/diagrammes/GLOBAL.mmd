@@ -1,0 +1,27 @@
+---
+config:
+  flowchart:
+    curve: linear
+---
+graph TD;
+	__start__([<p>__start__</p>]):::first
+	route_action(route_action)
+	analysis(analysis)
+	rag(rag)
+	videos(videos)
+	sessions(sessions)
+	finish_action(finish_action)
+	__end__([<p>__end__</p>]):::last
+	__start__ --> route_action;
+	analysis --> finish_action;
+	rag --> finish_action;
+	route_action -.-> analysis;
+	route_action -.-> rag;
+	route_action -.-> sessions;
+	route_action -.-> videos;
+	sessions --> finish_action;
+	videos --> finish_action;
+	finish_action --> __end__;
+	classDef default fill:#f2f0ff,line-height:1.2
+	classDef first fill-opacity:0
+	classDef last fill:#bfb6fc

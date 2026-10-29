@@ -1,0 +1,60 @@
+:root{font-family:system-ui,sans-serif;color:#182f30;background:#f1f4ef;font-synthesis:none}*{box-sizing:border-box}body{margin:0}header{padding:2rem max(1.2rem,calc((100vw - 1120px)/2));background:#163c3a;color:white}.eyebrow{font-size:.72rem;letter-spacing:.15em;color:#c8dfb1}h1{font-family:Georgia,serif;font-weight:400;font-size:2.4rem;margin:.5rem 0}header p{color:#d2e2dc}main{max-width:1160px;margin:1.5rem auto;display:grid;grid-template-columns:minmax(300px,650px) 1fr;gap:1.3rem;padding:0 1rem}section{background:white;border:1px solid #d9e0d7;border-radius:12px;padding:1.2rem}aside{display:grid;gap:1rem;align-content:start}.controls,.actions{display:flex;gap:1rem;flex-wrap:wrap;align-items:end}label{display:grid;gap:.4rem;font-size:.85rem;font-weight:600}select,button{font:inherit;border-radius:6px;padding:.65rem;border:1px solid #9dac9e;background:#fff;color:inherit}button:not(:disabled){cursor:pointer}button:focus-visible,select:focus-visible{outline:3px solid #c27723;outline-offset:2px}button:disabled{cursor:default;opacity:.65}.notice{font-size:.8rem;background:#fff4d6;border-radius:6px;padding:.65rem;line-height:1.6}.board{display:grid;grid-template-columns:repeat(8,1fr);width:100%;aspect-ratio:1;border:7px solid #294c43;border-radius:4px;margin:.8rem 0 1rem}.board button{position:relative;min-width:0;padding:0;border:0;border-radius:0;background:#e8ebcf;color:#111;aspect-ratio:1;font-family:'DejaVu Sans',serif;font-size:clamp(22px,4.2vw,49px);line-height:1}.board button.dark{background:#7e9e83}.board button:disabled{opacity:1}.board button.selected{box-shadow:inset 0 0 0 4px #df9a2c;background:#f1d99c}.board button:focus-visible{outline:4px solid #da7e14;outline-offset:-4px;z-index:1}.board small{position:absolute;bottom:2px;left:3px;font:10px system-ui;color:#243e2e}.error{padding:.8rem;background:#fff0ec;color:#92271b}.provenance,.muted{font-size:.8rem;line-height:1.6;color:#50645c}code{display:block;overflow-wrap:anywhere;padding:.8rem 0;font-size:.8rem}.history{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;padding-left:1.6rem;max-height:320px;overflow:auto}.history small{color:#68766f}h2{font-size:1.1rem}@media(max-width:800px){main{grid-template-columns:1fr}.board button{font-size:clamp(26px,8vw,48px)}header{padding:1.5rem}.actions{gap:.6rem}}
+
+.analysis-panel h3{font-size:1rem;margin:1.1rem 0 .4rem}.analysis-panel p{font-size:.85rem;line-height:1.55}.check{display:flex;align-items:center;margin:.8rem 0}.check input{width:18px;height:18px}.table-wrap{overflow:auto}table{border-collapse:collapse;width:100%;font-size:.8rem}caption{text-align:left;padding:.5rem 0}th,td{text-align:left;border-bottom:1px solid #d9e0d7;padding:.45rem}td small{display:block}.engine-score{font-weight:700;color:#244e3c}.analysis-status{font-weight:600}
+
+main{align-items:start}
+
+.demo-control{display:flex;flex-wrap:wrap;align-items:center;gap:1rem}.demo-control p{flex-basis:100%}.demo-control button[aria-pressed="true"]{background:#194f3c;color:white}.confirm{background:#fff5db;border:2px solid #976c14;padding:1rem;color:#252b25}.confirm button{margin:.3rem}
+
+.demo-control button{color:#183e31}.demo-control .muted{color:#d2e2dc}header .notice,.confirm p{color:#252b25}
+
+.opening-family{font-size:1.15rem}.eco{display:inline-block;border:1px solid #8ca992;border-radius:5px;padding:.15rem .4rem;font:600 .85rem system-ui}.opening-panel p{font-size:.85rem;line-height:1.55}.opening-panel details{overflow-wrap:anywhere}.opening-status{font-weight:600}.opening-previous{border-left:3px solid #b07c22;padding-left:.7rem}
+
+.conversation-panel textarea{display:block;width:100%;max-width:100%;box-sizing:border-box;font:inherit;padding:.6rem;margin:.5rem 0}.conversation-panel{margin-top:1rem}.conversation-source{border-top:1px solid #ccc;padding-top:.6rem;margin-top:1rem}.conversation-source .source-text{white-space:pre-wrap}.conversation-source code{overflow-wrap:anywhere}
+
+/* Landscape workspace: presentation only; source controls and bindings unchanged. */
+:root{--workspace-gap:1rem;--workspace-padding:1rem}
+header{padding:1rem clamp(1rem,2vw,2rem);display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);gap:.6rem 2rem;align-items:center}
+header .brand{min-width:0}header h1{font-size:1.9rem;margin:.25rem 0}header p{margin:.35rem 0}header>p,header>.confirm{grid-column:1/-1}
+.demo-control{justify-content:flex-end;gap:.5rem .8rem}.demo-control p{font-size:.8rem;line-height:1.4}.demo-control button{padding:.5rem .8rem}
+main{max-width:1900px;margin:1rem auto;gap:var(--workspace-gap);padding:0 var(--workspace-padding);grid-template-columns:minmax(320px,.95fr) minmax(280px,.9fr) minmax(340px,1.25fr);grid-template-areas:'play opening conversation' 'play analysis conversation' 'play history conversation' 'play sessions videos';align-items:start}
+main>section,.workspace>section{min-width:0;padding:1rem;overflow-wrap:anywhere;scroll-margin-block:1rem}
+.play-panel{grid-area:play;position:sticky;top:1rem;z-index:1}
+.opening-panel{grid-area:opening;max-height:18rem;overflow:auto}
+.history-panel{grid-area:history;max-height:10rem;overflow:auto}
+.analysis-panel{grid-area:analysis;max-height:28rem;overflow:auto}
+.conversation-panel{grid-area:conversation;margin-top:0;max-height:calc(100dvh - 170px);overflow:auto}
+.sessions-panel{grid-area:sessions;max-height:32rem;overflow:auto}
+.videos-panel{grid-area:videos;max-height:32rem;overflow:auto}
+main>section:not(.play-panel),.workspace>section{overscroll-behavior-y:contain;scrollbar-gutter:stable}
+.play-panel .board{width:min(100%,calc(100dvh - 390px));margin:.6rem auto .8rem}
+.play-panel .controls,.play-panel .actions{gap:.5rem;align-items:end}
+.play-panel .controls label{flex:1;min-width:8rem}.play-panel .controls select{width:100%}
+.play-panel>p{margin:.6rem 0}.play-panel .provenance{margin:.5rem 0}.play-panel .actions select,.play-panel .actions button{padding:.5rem}
+.board button{font-size:clamp(26px,3.1vw,50px)}
+main h2{margin:.1rem 0 .8rem}main p,main li{line-height:1.55}
+.conversation-panel>p,.conversation-source .source-text{max-width:78ch}
+.sessions-panel button,.videos-panel button{margin:.3rem .2rem .3rem 0}
+.sessions-panel label,.videos-panel label{margin:.7rem 0}
+select,textarea{min-width:0;max-width:100%}
+button{max-width:100%;white-space:normal;overflow-wrap:normal}
+section:focus-visible,summary:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,.table-wrap:focus-visible{outline:3px solid #c27723;outline-offset:3px}
+summary{cursor:pointer;line-height:1.5}a{overflow-wrap:anywhere}
+.table-wrap{max-width:100%;overscroll-behavior-x:contain}
+.history{max-height:none;margin-bottom:.3rem}
+@media(max-width:1199px){
+ .play-panel{position:static}
+ main{grid-template-columns:minmax(300px,.95fr) minmax(320px,1.05fr);grid-template-areas:'play opening' 'play analysis' 'history conversation' 'sessions conversation' 'videos videos'}
+ header{grid-template-columns:1fr}.demo-control{justify-content:flex-start}
+ .conversation-panel{max-height:44rem}.play-panel .board{width:min(100%,26rem)}
+}
+@media(max-width:800px){
+ header{padding:1rem;gap:.5rem}header h1{font-size:1.7rem}
+ main{grid-template-columns:minmax(0,1fr);grid-template-areas:'play' 'opening' 'history' 'analysis' 'conversation' 'sessions' 'videos';padding:0 .7rem;margin:.8rem auto}
+ .play-panel{position:static}.play-panel .board{width:min(100%,28rem)}
+ main>section:not(.play-panel),.workspace>section{max-height:none;overflow:visible;scrollbar-gutter:auto}
+ .history{max-height:16rem;overflow:auto}.board button{font-size:clamp(26px,8vw,48px)}
+ .controls,.actions{gap:.6rem}
+}
+
+.workspace{display:contents}

@@ -1,0 +1,46 @@
+{
+  "date": "2026-10-29",
+  "backend": {
+    "passed": 916,
+    "failed": 0,
+    "duration_seconds": 55.04,
+    "existing_selected_tests": 892,
+    "release_packaging_tests": 24,
+    "network": 0,
+    "processes": 0,
+    "real_model_or_db": false
+  },
+  "frontend": {
+    "passed": 169,
+    "failed": 0,
+    "build": "PASS",
+    "node": "24.19.0",
+    "vite": "7.1.7",
+    "angular": "20.3.0",
+    "installed_dependencies_borrowed_read_only": true,
+    "runtime_installation_fresh": "not performed"
+  },
+  "compose": {
+    "configurations": 6,
+    "passed": 6,
+    "containers_started": 0
+  },
+  "browser": {
+    "status": "PASS",
+    "chromium": "154.0.8037.57",
+    "scenario_count": 1,
+    "actual_backend_local_http": true,
+    "api_responses": 11,
+    "provider_calls": 0,
+    "model_inferences": 0,
+    "db_connections": 0
+  },
+  "clean_docker_installation": "NOT_EXECUTED",
+  "public_push_performed": false,
+  "graphs": {
+    "compiled_parent": 1,
+    "compiled_children": 4,
+    "exports_matching_mermaid": 6,
+    "external_effects": 0
+  }
+}

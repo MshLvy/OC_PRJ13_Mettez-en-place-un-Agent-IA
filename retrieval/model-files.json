@@ -1,0 +1,57 @@
+{
+  "model": "BAAI/bge-m3",
+  "revision": "5617a9f61b028005a4858fdac845db406aefb181",
+  "declared_license": "MIT",
+  "weight_format": "pytorch zip; weights_only=True,mmap=True; no quantization",
+  "files": [
+    {
+      "file": "config.json",
+      "url": "https://huggingface.co/BAAI/bge-m3/resolve/5617a9f61b028005a4858fdac845db406aefb181/config.json",
+      "revision": "5617a9f61b028005a4858fdac845db406aefb181",
+      "bytes": 687,
+      "sha256": "26159e7ad065073448460117eb24b7a4572f6f4e78eadff65dc0a11c052449fa",
+      "retries": 0
+    },
+    {
+      "file": "tokenizer_config.json",
+      "url": "https://huggingface.co/BAAI/bge-m3/resolve/5617a9f61b028005a4858fdac845db406aefb181/tokenizer_config.json",
+      "revision": "5617a9f61b028005a4858fdac845db406aefb181",
+      "bytes": 444,
+      "sha256": "a62b2b6784f990259fddef5f16388693a8043be4f69179e6a5257eeb3f9abac4",
+      "retries": 0
+    },
+    {
+      "file": "special_tokens_map.json",
+      "url": "https://huggingface.co/BAAI/bge-m3/resolve/5617a9f61b028005a4858fdac845db406aefb181/special_tokens_map.json",
+      "revision": "5617a9f61b028005a4858fdac845db406aefb181",
+      "bytes": 964,
+      "sha256": "8c785abebea9ae3257b61681b4e6fd8365ceafde980c21970d001e834cf10835",
+      "retries": 0
+    },
+    {
+      "file": "tokenizer.json",
+      "url": "https://huggingface.co/BAAI/bge-m3/resolve/5617a9f61b028005a4858fdac845db406aefb181/tokenizer.json",
+      "revision": "5617a9f61b028005a4858fdac845db406aefb181",
+      "bytes": 17098108,
+      "sha256": "21106b6d7dab2952c1d496fb21d5dc9db75c28ed361a05f5020bbba27810dd08",
+      "retries": 0
+    },
+    {
+      "file": "sentencepiece.bpe.model",
+      "url": "https://huggingface.co/BAAI/bge-m3/resolve/5617a9f61b028005a4858fdac845db406aefb181/sentencepiece.bpe.model",
+      "revision": "5617a9f61b028005a4858fdac845db406aefb181",
+      "bytes": 5069051,
+      "sha256": "cfc8146abe2a0488e9e2a0c56de7952f7c11ab059eca145a0a727afce0db2865",
+      "retries": 0
+    },
+    {
+      "file": "pytorch_model.bin",
+      "url": "https://huggingface.co/BAAI/bge-m3/resolve/5617a9f61b028005a4858fdac845db406aefb181/pytorch_model.bin",
+      "revision": "5617a9f61b028005a4858fdac845db406aefb181",
+      "bytes": 2271145830,
+      "sha256": "b5e0ce3470abf5ef3831aa1bd5553b486803e83251590ab7ff35a117cf6aad38",
+      "retries": 0
+    }
+  ],
+  "total_bytes": 2293315084
+}

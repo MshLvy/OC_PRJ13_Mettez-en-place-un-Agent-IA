@@ -1,0 +1,58 @@
+# Optional CPU llama.cpp server. No weight/image acquisition at startup.
+services:
+  advisor-local:
+    image: "${LOCAL_LLM_IMAGE:-ghcr.io/ggml-org/llama.cpp:server@sha256:8052c13edd987de8858f8150031e025ac3d66823f09cf3ec8220899c4abce220}"
+    pull_policy: never
+    user: "${LOCAL_LLM_UID:-10001}:${LOCAL_LLM_GID:-10001}"
+    command:
+      - --model
+      - "/models/${LOCAL_LLM_MODEL_FILE:?select existing GGUF basename}"
+      - --alias
+      - "${LOCAL_LLM_MODEL_FILE:?select existing GGUF basename}"
+      - --host
+      - 0.0.0.0
+      - --port
+      - "8080"
+      - --ctx-size
+      - "${LOCAL_LLM_CONTEXT:-2048}"
+      - --threads
+      - "${LOCAL_LLM_THREADS:-2}"
+      - --threads-batch
+      - "${LOCAL_LLM_THREADS:-2}"
+      - --batch-size
+      - "256"
+      - --ubatch-size
+      - "128"
+      - --perf
+      - --threads-http
+      - "2"
+      - --parallel
+      - "1"
+      - --n-predict
+      - "128"
+      - --n-gpu-layers
+      - "0"
+    environment:
+      HOME: /tmp
+    volumes:
+      - type: bind
+        source: "${LOCAL_LLM_MODEL_DIR:?existing absolute GGUF directory required}"
+        target: /models
+        read_only: true
+        bind: {create_host_path: false}
+    networks: [app-net]
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    init: true
+    cpus: 2
+    mem_limit: 4g
+    pids_limit: 64
+    tmpfs:
+      - /tmp:size=64m
+    healthcheck:
+      test: [CMD, curl, --fail, --silent, http://127.0.0.1:8080/health]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+      start_period: 60s

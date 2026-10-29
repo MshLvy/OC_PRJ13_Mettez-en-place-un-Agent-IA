@@ -1,0 +1,88 @@
+[
+  {
+    "overlays": [],
+    "status": "PASS",
+    "services": [
+      "backend",
+      "frontend"
+    ],
+    "project": "p13-release",
+    "no_external_or_historical_resources": true
+  },
+  {
+    "overlays": [
+      "milvus"
+    ],
+    "status": "PASS",
+    "services": [
+      "backend",
+      "frontend",
+      "milvus",
+      "milvus-volume-init"
+    ],
+    "project": "p13-release",
+    "no_external_or_historical_resources": true
+  },
+  {
+    "overlays": [
+      "mongodb"
+    ],
+    "status": "PASS",
+    "services": [
+      "backend",
+      "frontend",
+      "mongodb"
+    ],
+    "project": "p13-release",
+    "no_external_or_historical_resources": true
+  },
+  {
+    "overlays": [
+      "milvus",
+      "bge"
+    ],
+    "status": "PASS",
+    "services": [
+      "advisor-bge",
+      "backend",
+      "frontend",
+      "milvus",
+      "milvus-volume-init"
+    ],
+    "project": "p13-release",
+    "no_external_or_historical_resources": true
+  },
+  {
+    "overlays": [
+      "local"
+    ],
+    "status": "PASS",
+    "services": [
+      "advisor-local",
+      "backend",
+      "frontend"
+    ],
+    "project": "p13-release",
+    "no_external_or_historical_resources": true
+  },
+  {
+    "overlays": [
+      "milvus",
+      "bge",
+      "mongodb",
+      "local"
+    ],
+    "status": "PASS",
+    "services": [
+      "advisor-bge",
+      "advisor-local",
+      "backend",
+      "frontend",
+      "milvus",
+      "milvus-volume-init",
+      "mongodb"
+    ],
+    "project": "p13-release",
+    "no_external_or_historical_resources": true
+  }
+]
